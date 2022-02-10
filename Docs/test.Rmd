@@ -1,0 +1,1210 @@
+---
+title: "trendEcon Austria Dashboard"
+output: 
+  flexdashboard::flex_dashboard:
+    orientation: rows
+    theme: 
+      version: 4
+      bootswatch: flatly
+    social: menu
+    vertical_layout: scroll
+    navbar:
+      - {icon: "fa-github", 
+         title: "Dashboard", 
+         href: "https://github.com/FelixZangerl/dashboard", align: right, target: blank}
+      - {title: "R package", href: "https://trendecon.github.io/trendecon/", align: right, target: blank}
+---
+
+```{r setup, include=FALSE}
+library(flexdashboard)
+library(htmlwidgets)
+library(dygraphs)
+library(readr)
+library(tsbox)
+library(xts)
+library(dplyr)
+library(tidyr)
+library(knitr)
+library(ggplot2)
+
+today <- as.character(Sys.Date())
+```
+
+# Home
+
+### trendEcon Austria
+
+This dashboard is based on the work of [trendEcon](https://www.trendecon.org). The data are scraped from Google Trends through the use of the `trendecon` R-package. The sectoral indicators are slightly adapted to match Austrian search keywords (e.g. different stores). The main focus of this project is to test the accuracy of the main indicator (PES) in a VAR forecasting framework.
+
+## Row {.tabset .tabset-fade}
+
+### Perceived Economic Situation
+
+```{r, eval=T}
+source <- "https://raw.githubusercontent.com/FelixZangerl/gsv_data/main/raw/at/trendecon_sa.csv"
+#source <- "../../gsv_data/raw/at/trendecon_sa.csv"
+
+economic_sentiment <- read_csv(source) %>%
+  select(time,value) %>%
+  ts_xts()
+
+
+dygraph(economic_sentiment,group = "keywords")%>%
+  dyAxis("x", drawGrid = FALSE)%>%
+  dySeries("value", label = "Index")%>%
+    dyEvent("2020-3-16", "Lockdown #1", labelLoc = "bottom")%>%
+    dyEvent("2020-5-1", "End of Lockdown #1", labelLoc = "bottom")%>%
+    dyEvent("2020-9-14", "Mandatory wearing of masks", labelLoc = "bottom")%>%
+    dyEvent("2020-11-3", "Lockdown 'light'", labelLoc = "bottom")%>%
+    dyEvent("2020-11-17", "Lockdown #2", labelLoc = "bottom")%>%
+    dyEvent("2020-12-6", "End of Lockdown #2", labelLoc = "bottom")%>%
+    dyEvent("2020-12-26", "Lockdown #3", labelLoc = "bottom")%>%
+    dyEvent("2021-2-7", "End of Lockdown #3", labelLoc = "bottom")%>%
+    dyEvent("2021-4-1", "Regional Lockdown (Vienna, Burgenland, Lower Austria)", labelLoc = "bottom")%>%
+    dyEvent("2021-4-11", "End of Regional Lockdown", labelLoc = "bottom")%>%
+    dyEvent("2021-5-19", "Easing measures - gastronomy, tourism, sports", labelLoc = "bottom")%>%
+    dyEvent("2021-6-10", "Easing measures - less social distancing", labelLoc = "bottom")%>%
+    dyEvent("2021-7-01", "Easing measures - night gastronomy", labelLoc = "bottom")%>%
+    dyEvent("2021-11-15", "Lockdown for unvaccinated") %>%
+    dyEvent("2021-11-22", "Lockdown #4", labelLoc = "bottom")%>%
+    dyEvent("2021-12-12", "End of Lockdown #4", labelLoc = "bottom")%>%
+    dyEvent("2022-01-31", "End of Lockdown for unvaccinated", labelLoc = "bottom") %>%
+      dyRangeSelector(dateWindow = c("2020-01-01", today))%>%
+      dyOptions(useDataTimezone = TRUE)
+```
+
+
+### Info
+
+###### Description
+
+The indicator for *Perceived Economic Situation* includes search terms that reflect people’s worries about the economy. For instance, people then google “economic crisis” (Wirtschaftskrise).
+
+###### Keywords
+
+- Wirtschaftskrise
+- Kurzarbeit
+- arbeitslos
+- Insolvenz
+
+[Download data](https://raw.githubusercontent.com/FelixZangerl/gsv_data/main/raw/at/trendecon_sa.csv){target="_blank"}
+
+## Row {.tabset .tabset-fade}
+
+### Clothing and Shoes
+
+```{r}
+source <- "https://raw.githubusercontent.com/FelixZangerl/gsv_data/main/raw/at/clothing_sa.csv"
+#source <- "../../gsv_data/raw/at/clothing_sa.csv"
+
+clothing <- read_csv(source) %>%
+  select(time,value) %>%
+  ts_xts()
+
+dygraph(clothing,group = "keywords")%>%
+  dyAxis("x", drawGrid = FALSE)%>%
+  dySeries("value", label = "Index")%>%
+    dyEvent("2020-3-16", "Lockdown #1", labelLoc = "bottom")%>%
+    dyEvent("2020-5-1", "End of Lockdown #1", labelLoc = "bottom")%>%
+    dyEvent("2020-9-14", "Mandatory wearing of masks", labelLoc = "bottom")%>%
+    dyEvent("2020-11-3", "Lockdown 'light'", labelLoc = "bottom")%>%
+    dyEvent("2020-11-17", "Lockdown #2", labelLoc = "bottom")%>%
+    dyEvent("2020-12-6", "End of Lockdown #2", labelLoc = "bottom")%>%
+    dyEvent("2020-12-26", "Lockdown #3", labelLoc = "bottom")%>%
+    dyEvent("2021-2-7", "End of Lockdown #3", labelLoc = "bottom")%>%
+    dyEvent("2021-4-1", "Regional Lockdown (Vienna, Burgenland, Lower Austria)", labelLoc = "bottom")%>%
+    dyEvent("2021-4-11", "End of Regional Lockdown", labelLoc = "bottom")%>%
+    dyEvent("2021-5-19", "Easing measures - gastronomy, tourism, sports", labelLoc = "bottom")%>%
+    dyEvent("2021-6-10", "Easing measures - less social distancing", labelLoc = "bottom")%>%
+    dyEvent("2021-7-01", "Easing measures - night gastronomy", labelLoc = "bottom")%>%
+    dyEvent("2021-11-15", "Lockdown for unvaccinated") %>%
+    dyEvent("2021-11-22", "Lockdown #4", labelLoc = "bottom")%>%
+    dyEvent("2021-12-12", "End of Lockdown #4", labelLoc = "bottom")%>%
+    dyEvent("2022-01-31", "End of Lockdown for unvaccinated", labelLoc = "bottom") %>%
+      dyRangeSelector(dateWindow = c("2020-01-01", today))%>%
+      dyOptions(useDataTimezone = TRUE)
+```
+
+### Info
+
+###### Description
+
+The category *Clothing and Shoes* includes clothing and shoe stores as well as a general search terms related to buying clothes and shoes. trendEcon found that people directly google for the brands they like. Note: the searchword “zalando” was not included because Zalando was not available in Austria before 2012.
+
+###### Keywords
+
+- mango
+- zara 
+- H&M 
+- blue tomato
+- schuhe kaufen 
+- deichmann
+
+[Download data](https://raw.githubusercontent.com/FelixZangerl/gsv_data/main/raw/at/clothing_sa.csv){target="_blank"}
+
+## Row {.tabset .tabset-fade}
+
+### Home Office
+
+```{r}
+source <- "https://raw.githubusercontent.com/FelixZangerl/gsv_data/main/raw/at/home_office_sa.csv"
+#source <- "../../gsv_data/raw/at/home_office_sa.csv"
+
+home_office <- read_csv(source) %>%
+  select(time,value) %>%
+  ts_xts()
+
+dygraph(home_office,group = "keywords")%>%
+  dyAxis("x", drawGrid = FALSE)%>%
+  dySeries("value", label = "Index")%>%
+    dyEvent("2020-3-16", "Lockdown #1", labelLoc = "bottom")%>%
+    dyEvent("2020-5-1", "End of Lockdown #1", labelLoc = "bottom")%>%
+    dyEvent("2020-9-14", "Mandatory wearing of masks", labelLoc = "bottom")%>%
+    dyEvent("2020-11-3", "Lockdown 'light'", labelLoc = "bottom")%>%
+    dyEvent("2020-11-17", "Lockdown #2", labelLoc = "bottom")%>%
+    dyEvent("2020-12-6", "End of Lockdown #2", labelLoc = "bottom")%>%
+    dyEvent("2020-12-26", "Lockdown #3", labelLoc = "bottom")%>%
+    dyEvent("2021-2-7", "End of Lockdown #3", labelLoc = "bottom")%>%
+    dyEvent("2021-4-1", "Regional Lockdown (Vienna, Burgenland, Lower Austria)", labelLoc = "bottom")%>%
+    dyEvent("2021-4-11", "End of Regional Lockdown", labelLoc = "bottom")%>%
+    dyEvent("2021-5-19", "Easing measures - gastronomy, tourism, sports", labelLoc = "bottom")%>%
+    dyEvent("2021-6-10", "Easing measures - less social distancing", labelLoc = "bottom")%>%
+    dyEvent("2021-7-01", "Easing measures - night gastronomy", labelLoc = "bottom")%>%
+    dyEvent("2021-11-15", "Lockdown for unvaccinated") %>%
+    dyEvent("2021-11-22", "Lockdown #4", labelLoc = "bottom")%>%
+    dyEvent("2021-12-12", "End of Lockdown #4", labelLoc = "bottom")%>%
+    dyEvent("2022-01-31", "End of Lockdown for unvaccinated", labelLoc = "bottom") %>%
+      dyRangeSelector(dateWindow = c("2020-01-01", today))%>%
+      dyOptions(useDataTimezone = TRUE)
+```
+
+### Info
+
+###### Description
+
+The category *Home Office* combine Google inquiries related to the new normal of working from home. The working-from-home-index contains the search terms:
+
+###### Keywords
+
+- headset
+- monitor
+- maus
+- hdmi
+
+[Download data](https://raw.githubusercontent.com/FelixZangerl/gsv_data/main/raw/at/home_office_sa.csv){target="_blank"}
+
+## Row {.tabset .tabset-fade}
+
+### Gardening and Home Improvement
+
+```{r}
+source <- "https://raw.githubusercontent.com/FelixZangerl/gsv_data/main/raw/at/gardening_sa.csv"
+#source <- "../../gsv_data/raw/at/gardening_sa.csv"
+
+gardening <- read_csv(source) %>%
+  select(time,value) %>%
+  ts_xts()
+
+dygraph(gardening,group = "keywords")%>%
+  dyAxis("x", drawGrid = FALSE)%>%
+  dySeries("value", label = "Index")%>%
+    dyEvent("2020-3-16", "Lockdown #1", labelLoc = "bottom")%>%
+    dyEvent("2020-5-1", "End of Lockdown #1", labelLoc = "bottom")%>%
+    dyEvent("2020-9-14", "Mandatory wearing of masks", labelLoc = "bottom")%>%
+    dyEvent("2020-11-3", "Lockdown 'light'", labelLoc = "bottom")%>%
+    dyEvent("2020-11-17", "Lockdown #2", labelLoc = "bottom")%>%
+    dyEvent("2020-12-6", "End of Lockdown #2", labelLoc = "bottom")%>%
+    dyEvent("2020-12-26", "Lockdown #3", labelLoc = "bottom")%>%
+    dyEvent("2021-2-7", "End of Lockdown #3", labelLoc = "bottom")%>%
+    dyEvent("2021-4-1", "Regional Lockdown (Vienna, Burgenland, Lower Austria)", labelLoc = "bottom")%>%
+    dyEvent("2021-4-11", "End of Regional Lockdown", labelLoc = "bottom")%>%
+    dyEvent("2021-5-19", "Easing measures - gastronomy, tourism, sports", labelLoc = "bottom")%>%
+    dyEvent("2021-6-10", "Easing measures - less social distancing", labelLoc = "bottom")%>%
+    dyEvent("2021-7-01", "Easing measures - night gastronomy", labelLoc = "bottom")%>%
+    dyEvent("2021-11-15", "Lockdown for unvaccinated") %>%
+    dyEvent("2021-11-22", "Lockdown #4", labelLoc = "bottom")%>%
+    dyEvent("2021-12-12", "End of Lockdown #4", labelLoc = "bottom")%>%
+    dyEvent("2022-01-31", "End of Lockdown for unvaccinated", labelLoc = "bottom") %>%
+      dyRangeSelector(dateWindow = c("2020-01-01", today))%>%
+      dyOptions(useDataTimezone = TRUE)
+```
+
+### Info
+
+###### Description
+
+The category *Gardening and Home Improvement* includes stores selling materials for home improvement such as building materials, garden accessories and electrical supplies.
+
+###### Keywords
+
+- Heim+Hobby
+- Bau+Hobby
+- Bauhaus
+- hornbach
+- obi
+
+[Download data](https://raw.githubusercontent.com/FelixZangerl/gsv_data/main/raw/at/gardening_sa.csv){target="_blank"}
+
+## Row {.tabset .tabset-fade}
+
+### Food Delivery
+
+```{r}
+source <- "https://raw.githubusercontent.com/FelixZangerl/gsv_data/main/raw/at/food_delivery_sa.csv"
+#source <- "../../gsv_data/raw/at/food_delivery_sa.csv"
+
+food_delivery <- read_csv(source) %>%
+  select(time,value) %>%
+  ts_xts()
+
+dygraph(food_delivery,group = "keywords")%>%
+  dyAxis("x", drawGrid = FALSE)%>%
+  dySeries("value", label = "Index")%>%
+    dyEvent("2020-3-16", "Lockdown #1", labelLoc = "bottom")%>%
+    dyEvent("2020-5-1", "End of Lockdown #1", labelLoc = "bottom")%>%
+    dyEvent("2020-9-14", "Mandatory wearing of masks", labelLoc = "bottom")%>%
+    dyEvent("2020-11-3", "Lockdown 'light'", labelLoc = "bottom")%>%
+    dyEvent("2020-11-17", "Lockdown #2", labelLoc = "bottom")%>%
+    dyEvent("2020-12-6", "End of Lockdown #2", labelLoc = "bottom")%>%
+    dyEvent("2020-12-26", "Lockdown #3", labelLoc = "bottom")%>%
+    dyEvent("2021-2-7", "End of Lockdown #3", labelLoc = "bottom")%>%
+    dyEvent("2021-4-1", "Regional Lockdown (Vienna, Burgenland, Lower Austria)", labelLoc = "bottom")%>%
+    dyEvent("2021-4-11", "End of Regional Lockdown", labelLoc = "bottom")%>%
+    dyEvent("2021-5-19", "Easing measures - gastronomy, tourism, sports", labelLoc = "bottom")%>%
+    dyEvent("2021-6-10", "Easing measures - less social distancing", labelLoc = "bottom")%>%
+    dyEvent("2021-7-01", "Easing measures - night gastronomy", labelLoc = "bottom")%>%
+    dyEvent("2021-11-15", "Lockdown for unvaccinated") %>%
+    dyEvent("2021-11-22", "Lockdown #4", labelLoc = "bottom")%>%
+    dyEvent("2021-12-12", "End of Lockdown #4", labelLoc = "bottom")%>%
+    dyEvent("2022-01-31", "End of Lockdown for unvaccinated", labelLoc = "bottom") %>%
+      dyRangeSelector(dateWindow = c("2020-01-01", today))%>%
+      dyOptions(useDataTimezone = TRUE)
+```
+
+### Info
+
+###### Description
+
+The category *Food Delivery* includes search terms related to take away and ordering pizza.
+
+###### Keywords
+
+- take away
+- takeaway 
+- pizza bestellen
+
+[Download data](https://raw.githubusercontent.com/FelixZangerl/gsv_data/main/raw/at/food_delivery_sa.csv){target="_blank"}
+
+## Row {.tabset .tabset-fade}
+
+### Cultural
+
+```{r}
+source <- "https://raw.githubusercontent.com/FelixZangerl/gsv_data/main/raw/at/cultural_sa.csv"
+#source <- "../../gsv_data/raw/at/cultural_sa.csv"
+
+cultural <- read_csv(source) %>%
+  select(time,value) %>%
+  ts_xts()
+
+dygraph(cultural,group = "keywords")%>%
+  dyAxis("x", drawGrid = FALSE)%>%
+  dySeries("value", label = "Index")%>%
+    dyEvent("2020-3-16", "Lockdown #1", labelLoc = "bottom")%>%
+    dyEvent("2020-5-1", "End of Lockdown #1", labelLoc = "bottom")%>%
+    dyEvent("2020-9-14", "Mandatory wearing of masks", labelLoc = "bottom")%>%
+    dyEvent("2020-11-3", "Lockdown 'light'", labelLoc = "bottom")%>%
+    dyEvent("2020-11-17", "Lockdown #2", labelLoc = "bottom")%>%
+    dyEvent("2020-12-6", "End of Lockdown #2", labelLoc = "bottom")%>%
+    dyEvent("2020-12-26", "Lockdown #3", labelLoc = "bottom")%>%
+    dyEvent("2021-2-7", "End of Lockdown #3", labelLoc = "bottom")%>%
+    dyEvent("2021-4-1", "Regional Lockdown (Vienna, Burgenland, Lower Austria)", labelLoc = "bottom")%>%
+    dyEvent("2021-4-11", "End of Regional Lockdown", labelLoc = "bottom")%>%
+    dyEvent("2021-5-19", "Easing measures - gastronomy, tourism, sports", labelLoc = "bottom")%>%
+    dyEvent("2021-6-10", "Easing measures - less social distancing", labelLoc = "bottom")%>%
+    dyEvent("2021-7-01", "Easing measures - night gastronomy", labelLoc = "bottom")%>%
+    dyEvent("2021-11-15", "Lockdown for unvaccinated") %>%
+    dyEvent("2021-11-22", "Lockdown #4", labelLoc = "bottom")%>%
+    dyEvent("2021-12-12", "End of Lockdown #4", labelLoc = "bottom")%>%
+    dyEvent("2022-01-31", "End of Lockdown for unvaccinated", labelLoc = "bottom") %>%
+      dyRangeSelector(dateWindow = c("2020-01-01", today))%>%
+      dyOptions(useDataTimezone = TRUE)
+```
+
+### Info
+
+###### Description
+
+The category *Cultural Events* includes search terms related to concerts, theatres, cinema and ticket providers for such events.
+
+###### Keywords
+
+- kino
+- theater
+- cinema
+- cineplexx
+- oper
+- konzert
+- oeticket
+
+[Download data](https://raw.githubusercontent.com/FelixZangerl/gsv_data/main/raw/at/cultural_sa.csv){target="_blank"}
+
+## Row {.tabset .tabset-fade}
+
+### Travel Abroad
+
+```{r}
+source <- "https://raw.githubusercontent.com/FelixZangerl/gsv_data/main/raw/at/travel_sa.csv"
+#source <- "../../gsv_data/raw/at/travel_sa.csv"
+
+travel <- read_csv(source) %>%
+  select(time,value) %>%
+  ts_xts()
+
+dygraph(travel,group = "keywords")%>%
+  dyAxis("x", drawGrid = FALSE)%>%
+  dySeries("value", label = "Index")%>%
+    dyEvent("2020-3-16", "Lockdown #1", labelLoc = "bottom")%>%
+    dyEvent("2020-5-1", "End of Lockdown #1", labelLoc = "bottom")%>%
+    dyEvent("2020-9-14", "Mandatory wearing of masks", labelLoc = "bottom")%>%
+    dyEvent("2020-11-3", "Lockdown 'light'", labelLoc = "bottom")%>%
+    dyEvent("2020-11-17", "Lockdown #2", labelLoc = "bottom")%>%
+    dyEvent("2020-12-6", "End of Lockdown #2", labelLoc = "bottom")%>%
+    dyEvent("2020-12-26", "Lockdown #3", labelLoc = "bottom")%>%
+    dyEvent("2021-2-7", "End of Lockdown #3", labelLoc = "bottom")%>%
+    dyEvent("2021-4-1", "Regional Lockdown (Vienna, Burgenland, Lower Austria)", labelLoc = "bottom")%>%
+    dyEvent("2021-4-11", "End of Regional Lockdown", labelLoc = "bottom")%>%
+    dyEvent("2021-5-19", "Easing measures - gastronomy, tourism, sports", labelLoc = "bottom")%>%
+    dyEvent("2021-6-10", "Easing measures - less social distancing", labelLoc = "bottom")%>%
+    dyEvent("2021-7-01", "Easing measures - night gastronomy", labelLoc = "bottom")%>%
+    dyEvent("2021-11-15", "Lockdown for unvaccinated") %>%
+    dyEvent("2021-11-22", "Lockdown #4", labelLoc = "bottom")%>%
+    dyEvent("2021-12-12", "End of Lockdown #4", labelLoc = "bottom")%>%
+    dyEvent("2022-01-31", "End of Lockdown for unvaccinated", labelLoc = "bottom") %>%
+      dyRangeSelector(dateWindow = c("2020-01-01", today))%>%
+      dyOptions(useDataTimezone = TRUE)
+```
+
+### Info
+
+###### Description
+
+The category *Travel Abroad* includes search terms used to book flights and holidays.
+
+###### Keywords
+
+- städtetrip
+- flug buchen
+- günstige flüge
+
+[Download data](https://raw.githubusercontent.com/FelixZangerl/gsv_data/main/raw/at/travel_sa.csv){target="_blank"}
+
+## Row {.tabset .tabset-fade}
+
+### Mobility
+
+```{r}
+source <- "https://raw.githubusercontent.com/FelixZangerl/gsv_data/main/raw/at/mobility_sa.csv"
+#source <- "../../gsv_data/raw/at/mobility_sa.csv"
+
+mobility <- read_csv(source) %>%
+  select(time,value) %>%
+  ts_xts()
+
+dygraph(mobility,group = "keywords")%>%
+  dyAxis("x", drawGrid = FALSE)%>%
+  dySeries("value", label = "Index")%>%
+    dyEvent("2020-3-16", "Lockdown #1", labelLoc = "bottom")%>%
+    dyEvent("2020-5-1", "End of Lockdown #1", labelLoc = "bottom")%>%
+    dyEvent("2020-9-14", "Mandatory wearing of masks", labelLoc = "bottom")%>%
+    dyEvent("2020-11-3", "Lockdown 'light'", labelLoc = "bottom")%>%
+    dyEvent("2020-11-17", "Lockdown #2", labelLoc = "bottom")%>%
+    dyEvent("2020-12-6", "End of Lockdown #2", labelLoc = "bottom")%>%
+    dyEvent("2020-12-26", "Lockdown #3", labelLoc = "bottom")%>%
+    dyEvent("2021-2-7", "End of Lockdown #3", labelLoc = "bottom")%>%
+    dyEvent("2021-4-1", "Regional Lockdown (Vienna, Burgenland, Lower Austria)", labelLoc = "bottom")%>%
+    dyEvent("2021-4-11", "End of Regional Lockdown", labelLoc = "bottom")%>%
+    dyEvent("2021-5-19", "Easing measures - gastronomy, tourism, sports", labelLoc = "bottom")%>%
+    dyEvent("2021-6-10", "Easing measures - less social distancing", labelLoc = "bottom")%>%
+    dyEvent("2021-7-01", "Easing measures - night gastronomy", labelLoc = "bottom")%>%
+    dyEvent("2021-11-15", "Lockdown for unvaccinated") %>%
+    dyEvent("2021-11-22", "Lockdown #4", labelLoc = "bottom")%>%
+    dyEvent("2021-12-12", "End of Lockdown #4", labelLoc = "bottom")%>%
+    dyEvent("2022-01-31", "End of Lockdown for unvaccinated", labelLoc = "bottom") %>%
+      dyRangeSelector(dateWindow = c("2020-01-01", today))%>%
+      dyOptions(useDataTimezone = TRUE)
+```
+
+### Info
+
+###### Description
+
+The category *Mobility* includes search terms related to ground transportation: For instance, checking the railway schedule or calling a taxi.
+
+###### Keywords
+
+- Fahrplan
+- taxi
+- sixt
+- google maps
+
+[Download data](https://raw.githubusercontent.com/FelixZangerl/gsv_data/main/raw/at/mobility_sa.csv){target="_blank"}
+
+## Row {.tabset .tabset-fade}
+
+### Watches and Jewelry
+
+```{r}
+source <- "https://raw.githubusercontent.com/FelixZangerl/gsv_data/main/raw/at/luxury_sa.csv"
+#source <- "../../gsv_data/raw/at/luxury_sa.csv"
+
+jewelry <- read_csv(source) %>%
+  select(time,value) %>%
+  ts_xts()
+
+dygraph(jewelry,group = "keywords")%>%
+  dyAxis("x", drawGrid = FALSE)%>%
+  dySeries("value", label = "Index")%>%
+    dyEvent("2020-3-16", "Lockdown #1", labelLoc = "bottom")%>%
+    dyEvent("2020-5-1", "End of Lockdown #1", labelLoc = "bottom")%>%
+    dyEvent("2020-9-14", "Mandatory wearing of masks", labelLoc = "bottom")%>%
+    dyEvent("2020-11-3", "Lockdown 'light'", labelLoc = "bottom")%>%
+    dyEvent("2020-11-17", "Lockdown #2", labelLoc = "bottom")%>%
+    dyEvent("2020-12-6", "End of Lockdown #2", labelLoc = "bottom")%>%
+    dyEvent("2020-12-26", "Lockdown #3", labelLoc = "bottom")%>%
+    dyEvent("2021-2-7", "End of Lockdown #3", labelLoc = "bottom")%>%
+    dyEvent("2021-4-1", "Regional Lockdown (Vienna, Burgenland, Lower Austria)", labelLoc = "bottom")%>%
+    dyEvent("2021-4-11", "End of Regional Lockdown", labelLoc = "bottom")%>%
+    dyEvent("2021-5-19", "Easing measures - gastronomy, tourism, sports", labelLoc = "bottom")%>%
+    dyEvent("2021-6-10", "Easing measures - less social distancing", labelLoc = "bottom")%>%
+    dyEvent("2021-7-01", "Easing measures - night gastronomy", labelLoc = "bottom")%>%
+    dyEvent("2021-11-15", "Lockdown for unvaccinated") %>%
+    dyEvent("2021-11-22", "Lockdown #4", labelLoc = "bottom")%>%
+    dyEvent("2021-12-12", "End of Lockdown #4", labelLoc = "bottom")%>%
+    dyEvent("2022-01-31", "End of Lockdown for unvaccinated", labelLoc = "bottom") %>%
+      dyRangeSelector(dateWindow = c("2021-11-01", today))%>%
+      dyOptions(useDataTimezone = TRUE)
+```
+
+### Info
+
+###### Description
+
+The category *Watches and Jewellery* includes stores and brands selling luxurious watches and jewellery goods and related, more general search terms for luxury consumer goods.
+
+###### Keywords
+
+- juwelier
+- swarovski
+- uhr
+- uhren
+- christ
+- feichtinger
+
+[Download data](https://raw.githubusercontent.com/FelixZangerl/gsv_data/main/raw/at/luxury_sa.csv){target="_blank"}
+
+<!----------------------------------------------------------------------->
+<!---------------------------------------------------- moment PAGE --------->
+<!----------------------------------------------------------------------->
+
+# moment
+
+## Row {.tabset .tabset-fade}
+
+### Corona Indikator
+
+```{r, eval=T}
+source <- "https://raw.githubusercontent.com/FelixZangerl/gsv_data/main/tsgt/corona.csv"
+#source <- "../../gsv_data/raw/at/trendecon_sa.csv"
+
+corona <- read_csv(source) %>%
+ # select(time,value) %>%
+  ts_xts()
+
+dygraph(corona, group = "moment")%>%
+  dyAxis("x", drawGrid = FALSE)%>%
+  dySeries("PC1", label = "Index")%>%
+  dyEvent("2021-6-10", "Easing measures - less social distancing", labelLoc = "bottom")%>%
+  dyEvent("2021-7-01", "Easing measures - night gastronomy", labelLoc = "bottom")%>%
+    dyEvent("2021-11-15", "Lockdown for unvaccinated") %>%
+    dyEvent("2021-11-22", "Lockdown #4", labelLoc = "bottom")%>%
+    dyEvent("2021-12-12", "End of Lockdown #4", labelLoc = "bottom")%>%
+    dyEvent("2022-01-31", "End of Lockdown for unvaccinated", labelLoc = "bottom") %>%
+      dyRangeSelector(dateWindow = c("2021-11-01", today))%>%
+      dyOptions(useDataTimezone = TRUE)
+```
+
+
+### Info
+
+###### Description
+
+The indicator for 
+
+###### Keywords
+
+- Cofag
+- Stundungen 
+- Kredite 
+- Inzidenz
+- Coronafälle
+
+[Download data](https://raw.githubusercontent.com/FelixZangerl/gsv_data/main/tsgt/corona.csv){target="_blank"}
+
+
+### Zusammensetzung
+
+```{r}
+source <- "https://raw.githubusercontent.com/FelixZangerl/gsv_data/main/tsgt/corona_comp.csv"
+
+corona_comp <- read_csv(source) %>%
+  ts_xts()
+
+dygraph(corona_comp)
+```
+
+
+## Row {.tabset .tabset-fade}
+
+### Winterurlaub/Skitourismus
+
+```{r, eval=T}
+source <- "https://raw.githubusercontent.com/FelixZangerl/gsv_data/main/tsgt/ski.csv"
+#source <- "../../gsv_data/raw/at/trendecon_sa.csv"
+
+ski <- read_csv(source) %>%
+ # select(time,value) %>%
+  ts_xts()
+
+dygraph(ski, group = "moment")%>%
+  dyAxis("x", drawGrid = FALSE)%>%
+  dySeries("PC1", label = "Index")%>%
+  dyEvent("2021-6-10", "Easing measures - less social distancing", labelLoc = "bottom")%>%
+  dyEvent("2021-7-01", "Easing measures - night gastronomy", labelLoc = "bottom")%>%
+    dyEvent("2021-11-15", "Lockdown for unvaccinated") %>%
+    dyEvent("2021-11-22", "Lockdown #4", labelLoc = "bottom")%>%
+    dyEvent("2021-12-12", "End of Lockdown #4", labelLoc = "bottom")%>%
+    dyEvent("2022-01-31", "End of Lockdown for unvaccinated", labelLoc = "bottom") %>%
+      dyRangeSelector(dateWindow = c("2021-11-01", today))%>%
+      dyOptions(useDataTimezone = TRUE)
+```
+
+
+### Info
+
+###### Description
+
+The indicator for 
+
+###### Keywords
+
+- Urlaub Tirol
+- Skiurlaub Österreich
+- Ischgl
+- Winterurlaub
+- Skifahren Österreich
+
+[Download data](https://raw.githubusercontent.com/FelixZangerl/gsv_data/main/tsgt/ski.csv){target="_blank"}
+
+## Row {.tabset .tabset-fade}
+
+### stationärer Handel
+
+```{r, eval=T}
+source <- "https://raw.githubusercontent.com/FelixZangerl/gsv_data/main/tsgt/handel_offline.csv"
+#source <- "../../gsv_data/raw/at/trendecon_sa.csv"
+
+handel_offline <- read_csv(source) %>%
+ # select(time,value) %>%
+  ts_xts()
+
+dygraph(handel_offline, group = "moment")%>%
+  dyAxis("x", drawGrid = FALSE)%>%
+  dySeries("PC1", label = "Index")%>%
+  dyEvent("2021-6-10", "Easing measures - less social distancing", labelLoc = "bottom")%>%
+  dyEvent("2021-7-01", "Easing measures - night gastronomy", labelLoc = "bottom")%>%
+    dyEvent("2021-11-15", "Lockdown for unvaccinated") %>%
+    dyEvent("2021-11-22", "Lockdown #4", labelLoc = "bottom")%>%
+    dyEvent("2021-12-12", "End of Lockdown #4", labelLoc = "bottom")%>%
+    dyEvent("2022-01-31", "End of Lockdown for unvaccinated", labelLoc = "bottom") %>%
+      dyRangeSelector(dateWindow = c("2021-11-01", today))%>%
+      dyOptions(useDataTimezone = TRUE)
+```
+
+
+### Info
+
+###### Description
+
+The indicator for 
+
+###### Keywords
+
+- Shopping Center
+- SCS
+- SCN
+- EKZ
+- Geschäft
+
+
+[Download data](https://raw.githubusercontent.com/FelixZangerl/gsv_data/main/tsgt/handel_offline.csv){target="_blank"}
+
+### VGR Handel - WWWI
+
+```{r}
+source <- "https://raw.githubusercontent.com/FelixZangerl/gsv_data/main/tsgt/handel_offline_vgr.csv"
+
+handel_offline_vgr_vgr <- read_csv(source)
+
+colnames(handel_offline_vgr_vgr) <- c("DATE", "Handel(WWWI-WIFO)","stationärer Handel (GSV)")
+
+handel_offline_vgr_vgr <- handel_offline_vgr_vgr %>%
+  ts_xts()
+
+dygraph(handel_offline_vgr_vgr)
+```
+
+
+## Row {.tabset .tabset-fade}
+
+### Gastronomie
+
+```{r, eval=T}
+source <- "https://raw.githubusercontent.com/FelixZangerl/gsv_data/main/tsgt/gastro.csv"
+#source <- "../../gsv_data/raw/at/trendecon_sa.csv"
+
+gastro <- read_csv(source) %>%
+ # select(time,value) %>%
+  ts_xts()
+
+dygraph(gastro, group = "moment")%>%
+  dyAxis("x", drawGrid = FALSE)%>%
+  dySeries("PC1", label = "Index")%>%
+  dyEvent("2021-6-10", "Easing measures - less social distancing", labelLoc = "bottom")%>%
+  dyEvent("2021-7-01", "Easing measures - night gastronomy", labelLoc = "bottom")%>%
+    dyEvent("2021-11-15", "Lockdown for unvaccinated") %>%
+    dyEvent("2021-11-22", "Lockdown #4", labelLoc = "bottom")%>%
+    dyEvent("2021-12-12", "End of Lockdown #4", labelLoc = "bottom")%>%
+    dyEvent("2022-01-31", "End of Lockdown for unvaccinated", labelLoc = "bottom") %>%
+      dyRangeSelector(dateWindow = c("2021-11-01", today))%>%
+      dyOptions(useDataTimezone = TRUE)
+```
+
+
+### Info
+
+###### Description
+
+The indicator for 
+
+###### Keywords
+
+- Oeffnungszeiten
+- Bar
+- Restaurant
+- Mittagsmenu
+- Speisekarte
+
+[Download data](https://raw.githubusercontent.com/FelixZangerl/gsv_data/main/tsgt/ski.csv){target="_blank"}
+
+### VGR Gastronomie und Beherbergung - WWWI
+
+```{r}
+source <- "https://raw.githubusercontent.com/FelixZangerl/gsv_data/main/tsgt/gastro_vgr.csv"
+
+gastro_vgr <- read_csv(source) 
+
+colnames(gastro_vgr) <- c("DATE", "Gastronomie und Beherbergung(WWWI-WIFO)","Gastronomie (GSV)")
+
+gastro_vgr <- gastro_vgr %>%
+  ts_xts()
+
+dygraph(gastro_vgr)
+```
+
+## Row {.tabset .tabset-fade}
+
+### Elektronik
+
+```{r, eval=T}
+source <- "https://raw.githubusercontent.com/FelixZangerl/gsv_data/main/tsgt/elektro.csv"
+#source <- "../../gsv_data/raw/at/trendecon_sa.csv"
+
+elektro <- read_csv(source) %>%
+ # select(time,value) %>%
+  ts_xts()
+
+dygraph(elektro, group = "moment")%>%
+  dyAxis("x", drawGrid = FALSE)%>%
+  dySeries("PC1", label = "Index")%>%
+  dyEvent("2021-6-10", "Easing measures - less social distancing", labelLoc = "bottom")%>%
+  dyEvent("2021-7-01", "Easing measures - night gastronomy", labelLoc = "bottom")%>%
+    dyEvent("2021-11-15", "Lockdown for unvaccinated") %>%
+    dyEvent("2021-11-22", "Lockdown #4", labelLoc = "bottom")%>%
+    dyEvent("2021-12-12", "End of Lockdown #4", labelLoc = "bottom")%>%
+    dyEvent("2022-01-31", "End of Lockdown for unvaccinated", labelLoc = "bottom") %>%
+      dyRangeSelector(dateWindow = c("2021-11-01", today))%>%
+      dyOptions(useDataTimezone = TRUE)
+```
+
+
+### Info
+
+###### Description
+
+The indicator for 
+
+###### Keywords
+
+- Geizhals
+- Mediamarkt
+- e-tec
+- willhaben
+- Elektronik
+
+[Download data](https://raw.githubusercontent.com/FelixZangerl/gsv_data/main/tsgt/elektro.csv){target="_blank"}
+
+## Row {.tabset .tabset-fade}
+
+### körpernahe Dienstleistungen
+
+```{r, eval=T}
+source <- "https://raw.githubusercontent.com/FelixZangerl/gsv_data/main/tsgt/dienstleistung.csv"
+#source <- "../../gsv_data/raw/at/trendecon_sa.csv"
+
+dienstleistung <- read_csv(source) %>%
+ # select(time,value) %>%
+  ts_xts()
+
+dygraph(dienstleistung, group = "moment")%>%
+  dyAxis("x", drawGrid = FALSE)%>%
+  dySeries("PC1", label = "Index")%>%
+  dyEvent("2021-6-10", "Easing measures - less social distancing", labelLoc = "bottom")%>%
+  dyEvent("2021-7-01", "Easing measures - night gastronomy", labelLoc = "bottom")%>%
+    dyEvent("2021-11-15", "Lockdown for unvaccinated") %>%
+    dyEvent("2021-11-22", "Lockdown #4", labelLoc = "bottom")%>%
+    dyEvent("2021-12-12", "End of Lockdown #4", labelLoc = "bottom")%>%
+    dyEvent("2022-01-31", "End of Lockdown for unvaccinated", labelLoc = "bottom") %>%
+      dyRangeSelector(dateWindow = c("2021-11-01", today))%>%
+      dyOptions(useDataTimezone = TRUE)
+```
+
+
+### Info
+
+###### Description
+
+The indicator for 
+
+###### Keywords
+
+- friseur
+- massage
+- nagelstudio
+
+[Download data](https://raw.githubusercontent.com/FelixZangerl/gsv_data/main/tsgt/dienstleistung.csv){target="_blank"}
+
+## Row {.tabset .tabset-fade}
+
+### Baumarkt und Garten
+
+```{r, eval=T}
+source <- "https://raw.githubusercontent.com/FelixZangerl/gsv_data/main/tsgt/baumarkt.csv"
+#source <- "../../gsv_data/raw/at/trendecon_sa.csv"
+
+baumarkt <- read_csv(source) %>%
+ # select(time,value) %>%
+  ts_xts()
+
+dygraph(baumarkt, group = "moment")%>%
+  dyAxis("x", drawGrid = FALSE)%>%
+  dySeries("PC1", label = "Index")%>%
+  dyEvent("2021-6-10", "Easing measures - less social distancing", labelLoc = "bottom")%>%
+  dyEvent("2021-7-01", "Easing measures - night gastronomy", labelLoc = "bottom")%>%
+    dyEvent("2021-11-15", "Lockdown for unvaccinated") %>%
+    dyEvent("2021-11-22", "Lockdown #4", labelLoc = "bottom")%>%
+    dyEvent("2021-12-12", "End of Lockdown #4", labelLoc = "bottom")%>%
+    dyEvent("2022-01-31", "End of Lockdown for unvaccinated", labelLoc = "bottom") %>%
+      dyRangeSelector(dateWindow = c("2021-11-01", today))%>%
+      dyOptions(useDataTimezone = TRUE)
+```
+
+
+### Info
+
+###### Description
+
+The indicator for 
+
+###### Keywords
+
+- dehner
+- b&b
+- kika
+- leiner
+- bellaflora
+- xxxlutz
+- ikea
+
+[Download data](https://raw.githubusercontent.com/FelixZangerl/gsv_data/main/tsgt/baumarkt.csv){target="_blank"}
+
+## Row {.tabset .tabset-fade}
+
+### Einkaufszentren
+
+```{r, eval=T}
+source <- "https://raw.githubusercontent.com/FelixZangerl/gsv_data/main/tsgt/ekz.csv"
+#source <- "../../gsv_data/raw/at/trendecon_sa.csv"
+
+ekz <- read_csv(source) %>%
+ # select(time,value) %>%
+  ts_xts()
+
+dygraph(ekz, group = "moment")%>%
+  dyAxis("x", drawGrid = FALSE)%>%
+  dySeries("PC1", label = "Index")%>%
+  dyEvent("2021-6-10", "Easing measures - less social distancing", labelLoc = "bottom")%>%
+  dyEvent("2021-7-01", "Easing measures - night gastronomy", labelLoc = "bottom")%>%
+    dyEvent("2021-11-15", "Lockdown for unvaccinated") %>%
+    dyEvent("2021-11-22", "Lockdown #4", labelLoc = "bottom")%>%
+    dyEvent("2021-12-12", "End of Lockdown #4", labelLoc = "bottom")%>%
+    dyEvent("2022-01-31", "End of Lockdown for unvaccinated", labelLoc = "bottom") %>%
+      dyRangeSelector(dateWindow = c("2021-11-01", today))%>%
+      dyOptions(useDataTimezone = TRUE)
+```
+
+
+### Info
+
+###### Description
+
+The indicator for 
+
+###### Keywords
+
+- Mariahilferstraße
+- Einkaufszentrum
+- Kärtner Straße
+- Herrengasse
+- Getreidegasse
+
+
+[Download data](https://raw.githubusercontent.com/FelixZangerl/gsv_data/main/tsgt/ekz.csv){target="_blank"}
+
+## Row {.tabset .tabset-fade}
+
+### Fitnesscenter
+
+```{r, eval=T}
+source <- "https://raw.githubusercontent.com/FelixZangerl/gsv_data/main/tsgt/fitness.csv"
+#source <- "../../gsv_data/raw/at/trendecon_sa.csv"
+
+fitness <- read_csv(source) %>%
+ # select(time,value) %>%
+  ts_xts()
+
+dygraph(fitness, group = "moment")%>%
+  dyAxis("x", drawGrid = FALSE)%>%
+  dySeries("PC1", label = "Index")%>%
+  dyEvent("2021-6-10", "Easing measures - less social distancing", labelLoc = "bottom")%>%
+  dyEvent("2021-7-01", "Easing measures - night gastronomy", labelLoc = "bottom")%>%
+    dyEvent("2021-11-15", "Lockdown for unvaccinated") %>%
+    dyEvent("2021-11-22", "Lockdown #4", labelLoc = "bottom")%>%
+    dyEvent("2021-12-12", "End of Lockdown #4", labelLoc = "bottom")%>%
+    dyEvent("2022-01-31", "End of Lockdown for unvaccinated", labelLoc = "bottom") %>%
+      dyRangeSelector(dateWindow = c("2021-11-01", today))%>%
+      dyOptions(useDataTimezone = TRUE)
+```
+
+
+### Info
+
+###### Description
+
+The indicator for 
+
+###### Keywords
+
+- fitinn  
+- mcfit
+- crossfit
+- fitnesscenter
+- john harris
+
+[Download data](https://raw.githubusercontent.com/FelixZangerl/gsv_data/main/tsgt/fitness.csv){target="_blank"}
+
+## Row {.tabset .tabset-fade}
+
+### Bibliotheken
+
+```{r, eval=T}
+source <- "https://raw.githubusercontent.com/FelixZangerl/gsv_data/main/tsgt/bibliotheken.csv"
+#source <- "../../gsv_data/raw/at/trendecon_sa.csv"
+
+bibliotheken <- read_csv(source) %>%
+ # select(time,value) %>%
+  ts_xts()
+
+dygraph(bibliotheken, group = "moment")%>%
+  dyAxis("x", drawGrid = FALSE)%>%
+  dySeries("PC1", label = "Index")%>%
+  dyEvent("2021-6-10", "Easing measures - less social distancing", labelLoc = "bottom")%>%
+  dyEvent("2021-7-01", "Easing measures - night gastronomy", labelLoc = "bottom")%>%
+    dyEvent("2021-11-15", "Lockdown for unvaccinated") %>%
+    dyEvent("2021-11-22", "Lockdown #4", labelLoc = "bottom")%>%
+    dyEvent("2021-12-12", "End of Lockdown #4", labelLoc = "bottom")%>%
+    dyEvent("2022-01-31", "End of Lockdown for unvaccinated", labelLoc = "bottom") %>%
+      dyRangeSelector(dateWindow = c("2021-11-01", today))%>%
+      dyOptions(useDataTimezone = TRUE)
+```
+
+
+### Info
+
+###### Description
+
+The indicator for 
+
+###### Keywords
+
+- bibliothek
+- bib
+- unibib
+- städtische bücherei
+
+[Download data](https://raw.githubusercontent.com/FelixZangerl/gsv_data/main/tsgt/bibliotheken.csv){target="_blank"}
+
+## Row {.tabset .tabset-fade}
+
+### Mobilität (Auto)
+
+```{r, eval=T}
+source <- "https://raw.githubusercontent.com/FelixZangerl/gsv_data/main/tsgt/mobilitaet_auto.csv"
+#source <- "../../gsv_data/raw/at/trendecon_sa.csv"
+
+mobilitaet_auto <- read_csv(source) %>%
+ # select(time,value) %>%
+  ts_xts()
+
+dygraph(mobilitaet_auto, group = "moment")%>%
+  dyAxis("x", drawGrid = FALSE)%>%
+  dySeries("PC1", label = "Index")%>%
+  dyEvent("2021-6-10", "Easing measures - less social distancing", labelLoc = "bottom")%>%
+  dyEvent("2021-7-01", "Easing measures - night gastronomy", labelLoc = "bottom")%>%
+    dyEvent("2021-11-15", "Lockdown for unvaccinated") %>%
+    dyEvent("2021-11-22", "Lockdown #4", labelLoc = "bottom")%>%
+    dyEvent("2021-12-12", "End of Lockdown #4", labelLoc = "bottom")%>%
+    dyEvent("2022-01-31", "End of Lockdown for unvaccinated", labelLoc = "bottom") %>%
+      dyRangeSelector(dateWindow = c("2021-11-01", today))%>%
+      dyOptions(useDataTimezone = TRUE)
+```
+
+
+### Info
+
+###### Description
+
+The indicator for 
+
+###### Keywords
+
+- Tankpreisrechner
+- kfz werkstatt
+- Benzinpreis
+- Autobahnvignette
+- kfz Versicherung
+
+[Download data](https://raw.githubusercontent.com/FelixZangerl/gsv_data/main/tsgt/mobilität_auto.csv){target="_blank"}
+
+
+<!----------------------------------------------------------------------->
+<!---------------------------------------------------- PES PAGE ->
+<!----------------------------------------------------------------------->
+
+# PES
+
+### {data-height=800} 
+
+The main indicator shows co-movement with the consumer confidence and with the quarterly GDP growth rate. However, in contrast to the trendEcon results for Germany and Switzerland, the main indicator as well as the consumer confidence insufficiently capture the impact of the World Financial Crisis on GDP in the years after 2008/09.  
+
+```{r}
+source <- "https://github.com/FelixZangerl/gsv_data/blob/main/r_data/reliability.RData?raw=true"
+load(url(source))
+
+ts_dygraphs(ts_c(
+  `Perceived Economic Situation` = pes_m,
+  `GDP growth` = gdp,
+  `Consumer Confidence` = cc
+))  %>%
+  dySeries("Perceived Economic Situation", strokeWidth=3) %>%
+  dySeries("GDP growth", strokePattern = "dashed") %>%
+  dySeries("Consumer Confidence", strokePattern = "dotted") %>%
+  dyAxis("x", drawGrid = FALSE) %>%
+#  dyRangeSelector(dateWindow = c("2020-01-01", Sys.Date()))%>%
+  dyOptions(useDataTimezone = TRUE)
+```
+
+# Weekly Indicators
+
+### {data-height=800} 
+
+```{r}
+ts_dygraphs(ts_c(
+  `Perceived Economic Situation` = pes_w * 5,
+  `WIFO WWWI` = wwwi,
+  `OECD Weekly Tracker` = oecd_w * 100
+ # `OENB Weekly Indicator` = wecon_oenb
+))  %>%
+  dySeries("Perceived Economic Situation", strokeWidth=3) %>%
+  dySeries("WIFO WWWI", strokeWidth = 3) %>%
+  dySeries("OECD Weekly Tracker", strokeWidth = 3) %>%
+ # dySeries("OENB Weekly Indicator", strokeWidth = 3) %>%
+  dyAxis("x", drawGrid = FALSE) %>%
+    dyRangeSelector(dateWindow = c(as.Date("2020-01-01"), Sys.Date()))%>%
+  dyOptions(useDataTimezone = TRUE)
+```
+
+
+<!----------------------------------------------------------------------->
+<!---------------------------------------------------- VAR PAGE --------->
+<!----------------------------------------------------------------------->
+
+
+# VAR
+
+```{r}
+library(vars)
+library(ggfortify)
+#load("../../gsv_data/r_data/var.RData")
+source <- "https://github.com/FelixZangerl/gsv_data/blob/main/r_data/var.RData?raw=true"
+load(url(source))
+```
+
+### Results
+
+Vector Autoregressive Model with 12 lags: \(\mathbf{x_t^{AT}} = [ PES_t^{AT}, u_t^{AT}, cpi_t^{AT}] \)
+
+
+```{r, results='asis'}
+library(stargazer)
+stargazer(var6$varresult, type = "html", header = F, title = "VAR(12)",  
+          column.labels = c("pes","une","cpi"), 
+          dep.var.caption = "<p>dependent variables: pes, une, cpi</p>", 
+          dep.var.labels = c(""), 
+          covariate.labels = c("$pes_{t-1}$","<p>&#916; une<sub>t-1</sub></p>","$cpi_{t-1}$",
+                               "$pes_{t-2}$","<p>&#916; une<sub>t-2</sub></p>","$cpi_{t-2}$",
+                               "$pes_{t-3}$","<p>&#916; une<sub>t-3</sub></p>","$cpi_{t-3}$",
+                               "$pes_{t-4}$","<p>&#916; une<sub>t-4</sub></p>","$cpi_{t-4}$",
+                               "$pes_{t-5}$","<p>&#916; une<sub>t-5</sub></p>","$cpi_{t-5}$",
+                               "$pes_{t-6}$","<p>&#916; une<sub>t-6</sub></p>","$cpi_{t-6}$",
+                               "$pes_{t-7}$","<p>&#917; une<sub>t-7</sub></p>","$cpi_{t-7}$",
+                               "$pes_{t-8}$","<p>&#918; une<sub>t-8</sub></p>","$cpi_{t-8}$",
+                               "$pes_{t-9}$","<p>&#919; une<sub>t-9</sub></p>","$cpi_{t-9}$",
+                               "$pes_{t-10}$","<p>&#9110; une<sub>t-10</sub></p>","$cpi_{t-10}$",
+                               "$pes_{t-11}$","<p>&#9110; une<sub>t-11</sub></p>","$cpi_{t-11}$",
+                               "$pes_{t-12}$","<p>&#9110; une<sub>t-12</sub></p>","$cpi_{t-12}$",
+                               "constant"))
+```
+### Summary
+
+##### Data
+
+pes - Perceived Economic Situation (Nowcasting proxy for GDP) <br>
+une - Unemployment rate <br>
+cpi - Inflation rate year-on-year <br>
+
+all variables are on a monthly frequency
+
+##### Model diagnostics - residuals 
+(p.value threshold = 0.05)
+
+```{r, include=F}
+lag <- 12
+serial <- serial.test(var6, lags.pt=lag*2, type="PT.asymptotic")
+normtest <- normality.test(var6)
+print(normtest)
+arch <- arch.test(var6, lags.multi = 6, multivariate.only = T)
+print(arch)
+
+#ctest_e <- ca.jo(pesdat, type = "eigen", ecdet = "const", K = 15)
+#ctest_t <- ca.jo(pesdat, type = "trace", ecdet = "const", K = 15)
+```
+
+
+multivariate test for serially correlated errors (Portmanteau- and Breusch-Godfrey):
+H0 of no serial correlation: `r ifelse(serial$serial$p.value > 0.05, "accepted", "rejected")`. p = `r round(serial$serial$p.value,2)`
+
+multivariate Jarque-Bera tests:
+
+H0 of Normality: `r ifelse(normtest$jb.mul$JB$p.value > 0.05, "accepted", "rejected")`. p = `r round(normtest$jb.mul$JB$p.value,2)`
+
+H0 of Skewness = 0: `r ifelse(normtest$jb.mul$Skewness$p.value > 0.05, "accepted", "rejected")`. p = `r round(normtest$jb.mul$Skewness$p.value,2)`
+
+H0 of Kurtosis (excess curtosis = 0): `r ifelse(normtest$jb.mul$Kurtosis$p.value > 0.05, "accepted", "rejected")`. p = `r round(normtest$jb.mul$Kurtosis$p.value,2)`
+
+multivariate ARCH-LM test:
+
+H0 of homoskedasticity: `r ifelse(arch$arch.mul$p.value > 0.05, "accepted", "rejected")`. p = `r round(arch$arch.mul$p.value,2)`
+
+##### Model stability - structural breaks
+
+The data lies between the confidence level boundaries and therefore indicates that there are no structural changes in the data.
+
+```{r}
+stability <- stability(var6, type = "OLS-CUSUM")
+plot(stability)
+```
+
+##### Sources
+
+PES - scraped from Google Trends using the `trendecon` r package. <br>
+unemployment - Source: [Statistik Austria](https://www.statistik.at/web_de/statistiken/index.html) <br>
+consumer price index - Source: [Statistik Austria](https://www.statistik.at/web_de/statistiken/index.html) <br>
+consumer confidence index - Source: [OeNB](https://www.oenb.at/) <br>
+gdp - Source: [OECD](data.oecd.org) <br>
+
+R-Packages: `dygraphs`, `flexdashboard`, `htmlwidgets`, `knitr`, `tsbox`, `tidyverse`, `vars`, `ggplot2`, `plotly` `ggfortify`, `stargazer`, `forecast`
+
+<!----------------------------------------------------------------------->
+<!---------------------------------------------------- Forecasting PAGE ->
+<!----------------------------------------------------------------------->
+
+# Forecasting
+
+## Row {.tabset .tabset-fade}
+
+### In sample VAR(12) Forecasting (3M ahead)
+
+```{r}
+horizon <- 3
+forecast::autoplot(stats::predict(var6, n.ahead=horizon))
+```
+
+
+## Row {.tabset .tabset-fade data-height=1700}
+
+
+### Accuracy
+
+###### Evaluation of in-sample forecast accuracy (3M ahead)
+
+
+```{r, results='asis', include=F}
+print(xtable::xtable(accs_main, label = "tab:acc", caption = "3-month ahead rolling in-sample forecast. Displayed here are several accuracy measures for the PES forecasting model."),  include.rownames = FALSE, type="html")
+```
+
+```{r}
+knitr::kable(accs_main, digits=3)
+```
+
+
+# Benchmarks
+
+## Row {.tabset .tabset-fade}
+
+### Benchmark models (3M ahead)
+
+
+```{r}
+g2
+```
