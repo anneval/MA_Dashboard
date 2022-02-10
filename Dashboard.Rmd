@@ -45,12 +45,15 @@ This dashboard is based on the work of [trendEcon](https://www.trendecon.org). T
 ```{r}
 keywords <- c("Wirtschaftskrise", "Kurzarbeit", "arbeitslos") #Insolvenz
 Google_AT_daily <- read.csv("https://raw.githubusercontent.com/trendecon/data/master/data/at/trendecon_sa.csv")
+Google_AT_daily <- read.csv("https://raw.githubusercontent.com/anneval/MA/blob/main/Code/raw/at/trendecon_sa.csv")
+source <- "/FelixZangerl/gsv_data/main/raw/at/trendecon_sa.csv"
+
 
 economic_sentiment <- Google_AT_daily %>%
   select(time,value) %>%
   ts_xts()
 
-# works???? 
+# works???? NO! 
 events <- read.csv("https://github.com/anneval/Dashboard/blob/main/Events.csv")
 
 dygraph(economic_sentiment,group = "keywords")%>%
