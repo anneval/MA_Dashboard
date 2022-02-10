@@ -43,7 +43,7 @@ This dashboard is based on the work of [trendEcon](https://www.trendecon.org). T
 
 ### Perceived Economic Situation
 ```{r}
-keywords <- c("Wirtschaftskrise", "Kurzarbeit", "arbeitslos") #Insolvenz
+keywords <- c("Wirtschaftskrise", "Kurzarbeit", "arbeitslos", "Insolvenz","Inflation") #
 Google_AT_daily <- read.csv("https://raw.githubusercontent.com/anneval/MA/main/raw/at/trendecon_sa.csv")
 
 economic_sentiment <- Google_AT_daily %>%
@@ -72,6 +72,7 @@ The indicator for *Perceived Economic Situation* includes search terms that refl
 - Kurzarbeit
 - arbeitslos
 - Insolvenz
+- Inflation
 
 CHANGE !
 [Download data](https://raw.githubusercontent.com/FelixZangerl/gsv_data/main/raw/at/trendecon_sa.csv){target="_blank"}
