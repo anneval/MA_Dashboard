@@ -10,7 +10,7 @@ output:
       #code_font: !expr bslib::font_google("JetBrains Mono")
     orientation: rows
     #source_code: embed
-    vertical_layout: fill
+    vertical_layout: scroll
     social: ["menu"]
     navbar:
       - {icon: "fa-github", 
