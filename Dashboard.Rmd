@@ -50,6 +50,9 @@ economic_sentiment <- Google_AT_daily %>%
   select(time,value) %>%
   ts_xts()
 
+# works???? 
+events <- read.csv("https://github.com/anneval/Dashboard/blob/main/Events.csv")
+
 dygraph(economic_sentiment,group = "keywords")%>%
   dyAxis("x", drawGrid = FALSE)%>%
   dySeries("value", label = "Index")%>%
