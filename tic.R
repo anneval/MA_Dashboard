@@ -7,6 +7,8 @@ get_stage("install") %>%
   add_step(step_install_cran("timetk")) %>%
   add_step(step_install_cran("tsbox"))
 
+### add more packages here if needed (var and forecast later probably)
+
 get_stage("before_deploy") %>%
   add_step(step_setup_ssh()) %>%
   add_step(step_setup_push_deploy())
