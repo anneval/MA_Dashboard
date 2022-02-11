@@ -19,7 +19,6 @@ output:
       - {title: "R package", href: "https://trendecon.github.io/trendecon/", align: right, target: blank}
 ---
 
-
 ```{r setup, include=FALSE}
 library(flexdashboard)
 library(tsbox)
@@ -37,7 +36,7 @@ today <- as.character(Sys.Date())
 
 ### trendEcon Austria
 
-This dashboard is based on the work of [trendEcon](https://www.trendecon.org). The data are scraped from Google Trends through the use of the `trendecon` R-package. The sectoral indicators are slightly adapted to match Austrian search keywords (e.g. different stores). The main focus of this project is to test the accuracy of the main indicator (PES) in a VAR forecasting framework.
+"This dashboard is based on the work of [trendEcon](https://www.trendecon.org). The data are scraped from Google Trends through the use of the `trendecon` R-package. The sectoral indicators are slightly adapted to match Austrian search keywords (e.g. different stores). The main focus of this project is to test the accuracy of the main indicator (PES) in a VAR forecasting framework."
 
 ## Row {.tabset .tabset-fade}
 
@@ -73,8 +72,7 @@ The indicator for *Perceived Economic Situation* includes search terms that refl
 - Insolvenz
 - Inflation
 
-CHANGE !
-[Download data](https://raw.githubusercontent.com/FelixZangerl/gsv_data/main/raw/at/trendecon_sa.csv){target="_blank"}
+[Download data](https://raw.githubusercontent.com/anneval/MA_data/main/raw/at/trendecon_sa.csv){target="_blank"}
 
 ## Row {.tabset .tabset-fade}
 
