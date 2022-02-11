@@ -1,0 +1,88 @@
+---
+title: "Economic Sentiment & GDP Nowcasting Austria"
+output: 
+  flexdashboard::flex_dashboard:
+    theme: journal #  yeti
+      #bg: "#101010"
+      #fg: "#FDF7F7" 
+      #primary: "#ED79F9"
+      #base_font: !expr bslib::font_google("Prompt")
+      #code_font: !expr bslib::font_google("JetBrains Mono")
+    orientation: rows
+    #source_code: embed
+    vertical_layout: scroll
+    social: ["menu"]
+    navbar:
+      - {icon: "fa-github", 
+         title: "Data", 
+         href: "https://github.com/anneval/MA", align: right, target: blank}
+      - {title: "R package", href: "https://trendecon.github.io/trendecon/", align: right, target: blank}
+---
+
+
+```{r setup, include=FALSE}
+library(flexdashboard)
+library(tsbox)
+library(dygraphs)
+library(readr)
+library(dplyr)
+library(tidyr)
+library(knitr)
+library(ggplot2)
+today <- as.character(Sys.Date())
+```
+# Home
+
+# Economic Sentiment Index
+
+### trendEcon Austria
+
+This dashboard is based on the work of [trendEcon](https://www.trendecon.org). The data are scraped from Google Trends through the use of the `trendecon` R-package. The sectoral indicators are slightly adapted to match Austrian search keywords (e.g. different stores). The main focus of this project is to test the accuracy of the main indicator (PES) in a VAR forecasting framework.
+
+## Row {.tabset .tabset-fade}
+
+### Perceived Economic Situation
+```{r}
+keywords <- c("Wirtschaftskrise", "Kurzarbeit", "arbeitslos", "Insolvenz","Inflation") #
+Google_AT_daily <- read.csv("https://raw.githubusercontent.com/anneval/MA/main/raw/at/trendecon_sa.csv")
+
+economic_sentiment <- Google_AT_daily %>%
+  select(time,value) %>%
+  ts_xts()
+
+# works???? NO! 
+events <- read.csv("https://github.com/anneval/Dashboard/blob/main/Events.csv")
+
+dygraph(economic_sentiment,group = "keywords")%>%
+  dyAxis("x", drawGrid = FALSE)%>%
+  dySeries("value", label = "Index")%>%
+      dyRangeSelector(dateWindow = c("2020-01-01", today))%>%
+      dyOptions(useDataTimezone = TRUE)
+```
+
+### Info
+
+###### Description
+
+The indicator for *Perceived Economic Situation* includes search terms that reflect people’s worries about the economy. For instance, people then google “economic crisis” (Wirtschaftskrise).
+
+###### Keywords
+
+- Wirtschaftskrise
+- Kurzarbeit
+- arbeitslos
+- Insolvenz
+- Inflation
+
+CHANGE !
+[Download data](https://raw.githubusercontent.com/FelixZangerl/gsv_data/main/raw/at/trendecon_sa.csv){target="_blank"}
+
+## Row {.tabset .tabset-fade}
+
+# Forecasting
+
+
+
+
+
+
