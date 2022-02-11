@@ -12,7 +12,7 @@ get_stage("install") %>%
   add_step(step_install_cran("readr"))%>%
   add_step(step_install_cran("dplyr")) %>%
   add_step(step_install_cran("ggplot2")) %>%
-  add_step(step_install_cran("tidyr")) %>%
+  add_step(step_install_cran("tidyr")) 
 
 get_stage("before_deploy") %>%
   add_step(step_setup_ssh()) %>%
