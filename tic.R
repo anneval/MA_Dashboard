@@ -12,5 +12,5 @@ get_stage("before_deploy") %>%
   add_step(step_setup_push_deploy())
 
 get_stage("deploy") %>%
-  add_code_step(rmarkdown::render("docs/index.Rmd")) %>%
+  add_code_step(rmarkdown::render("Docs/index.Rmd")) %>%
   add_step(step_do_push_deploy(commit_paths = "docs/index.html"))
