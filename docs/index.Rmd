@@ -17,6 +17,8 @@ output:
          title: "Data", 
          href: "https://github.com/anneval/MA", align: right, target: blank}
       - {title: "R package", href: "https://trendecon.github.io/trendecon/", align: right, target: blank}
+    includes:
+       in_header: v_Script.html
 ---
 
 ```{r setup, include=FALSE}
@@ -54,11 +56,6 @@ dygraph(economic_sentiment,group = "keywords")%>%
       dyRangeSelector(dateWindow = c("2020-01-01", today))%>%
       dyEvent(events)%>%
       dyOptions(useDataTimezone = TRUE)
-
-
-###events change
-write.table(events,file="data.csv",sep=",",dec = " ")
-
 
 ```
 
