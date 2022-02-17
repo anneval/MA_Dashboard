@@ -33,7 +33,7 @@ today <- as.character(Sys.Date())
 # Sentiment Indices
 ### trendEcon Austria
 
-This dashboard provides daily (economic) sentiment indicators based on Google searches in Austria. The data for the Google searches is scraped from Google Trends using the `trendecon` R-package. The project builds upon the work of [trendEcon](https://www.trendecon.org). Next to the presentation of the daily sentiment indices the goal is to evaluate the main indicator's (perceived economic situation) forecasting performance and accuracy in an GDP nowcasting exercise. To analyze its performance several models (VAR,AR,OLS) are being compared. 
+This dashboard provides daily (economic) sentiment indicators based on Google searches in Austria. The data for the Google searches is scraped from Google Trends using the `trendecon` R-package. The project builds upon the work of [trendEcon](https://www.trendecon.org). Next to the presentation of the daily sentiment indices the goal is to evaluate the main indicator's (perceived economic situation) forecasting performance and accuracy in an GDP nowcasting exercise. To analyze its performance several models (VAR,ARIMA,OLS) are being compared. 
 
 ## Row {.tabset .tabset-fade}
 
@@ -167,8 +167,21 @@ The indicator for the *Perceived Unemployment Situation* includes search terms t
 - Jobcenter
 - arbeitslos
 
+# Comparison PES
+
+Comparison of PES to GDP growth and and Consumper Confidence Index (do quarterly)
+
+## Row {.tabset .tabset-fade}
+
+Comparison of PES to Wifo and OenB weekly!
 
 # Forecasting
+
+Expanding OLS
+
+VAR
+
+ARIMA
 
 
 
