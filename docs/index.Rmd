@@ -17,8 +17,7 @@ output:
          title: "Data", 
          href: "https://github.com/anneval/MA", align: right, target: blank}
       - {title: "R package", href: "https://trendecon.github.io/trendecon/", align: right, target: blank}
-    includes:
-       in_header: v_Script.html
+  
 ---
 
 ```{r setup, include=FALSE}
@@ -39,7 +38,7 @@ This dashboard provides daily (economic) sentiment indicators based on Google se
 
 ## Row {.tabset .tabset-fade}
 
-### Daily Sentiment Indices
+### Daily Economic Sentiment Indices
 ```{r}
 keywords <- c("Wirtschaftskrise", "Kurzarbeit", "arbeitslos", "Insolvenz","Inflation") #
 Google_AT_daily <- read.csv("https://raw.githubusercontent.com/anneval/MA_data/main/raw/at/trendecon_sa.csv")
@@ -73,7 +72,7 @@ The indicator for the *Perceived Economic Situation* includes search terms that 
 - Insolvenz
 
 ## Row {.tabset .tabset-fade}
-
+### Daily Corona Sentiment Indices
 ```{r}
 keywords <- c("Inzidenz", "Coronafälle", "Testcenter", "Lockdown", "Pandemie")#
 Corona_AT_daily <- read.csv("https://raw.githubusercontent.com/anneval/MA_data/main/raw/at/corona_sa.csv")
@@ -105,7 +104,8 @@ The indicator for the *Perceived Corona Situation* includes search terms that re
 
 ## Row {.tabset .tabset-fade}
 
-```{r, include=F}
+### Daily Consumption Sentiment Indices
+```{r}
 keywords <- c("Shopping", "Klamotten", "Autokauf", "Restaurant", "Möbel")
 Consumption_AT_daily <- read.csv("https://raw.githubusercontent.com/anneval/MA_data/main/raw/at/corona_sa.csv")
 
@@ -117,9 +117,10 @@ dygraph(consumption_sentiment,group = "keywords")%>%
   dyAxis("x", drawGrid = FALSE)%>%
   dySeries("value", label = "Index")%>%
       dyRangeSelector(dateWindow = c("2020-01-01", today))%>%
-      dyEvent(events$date, events$event, labelLoc = "bottom") %>%
+    #  dyEvent(events$date, events$event, labelLoc = "bottom") %>%
       dyOptions(useDataTimezone = TRUE)
 ```
+
 ### Info
 
 ###### Description
@@ -136,7 +137,8 @@ The indicator for the *Perceived Consumption Situation* includes search terms th
 
 ## Row {.tabset .tabset-fade}
 
-```{r, include=F}
+### Daily Unemployement Sentiment Indices
+```{r}
 keywords <- c("Jobagentur", "Arbeitslosengeld", "Jobcenter", "arbeitslos")
 Unemployment_AT_daily <- read.csv("https://raw.githubusercontent.com/anneval/MA_data/main/raw/at/corona_sa.csv")
 
@@ -148,7 +150,7 @@ dygraph(unemployment_sentiment,group = "keywords")%>%
   dyAxis("x", drawGrid = FALSE)%>%
   dySeries("value", label = "Index")%>%
       dyRangeSelector(dateWindow = c("2020-01-01", today))%>%
-      dyEvent(events$date, events$event, labelLoc = "bottom") %>%
+     # dyEvent(events$date, events$event, labelLoc = "bottom") %>%
       dyOptions(useDataTimezone = TRUE)
 ```
 ### Info
