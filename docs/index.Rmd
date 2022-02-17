@@ -49,14 +49,14 @@ economic_sentiment <- Google_AT_daily %>%
   ts_xts()
 
 events <- read.csv2("https://raw.githubusercontent.com/anneval/MA_Dashboard/main/docs/Events.csv")
+events$date <- as.Date(events$date)
 
 dygraph(economic_sentiment,group = "keywords")%>%
   dyAxis("x", drawGrid = FALSE)%>%
   dySeries("value", label = "Index")%>%
-      dyRangeSelector(dateWindow = c("2020-01-01", today))%>%
-      dyEvent(events)%>%
-      dyOptions(useDataTimezone = TRUE)
-
+  dyEvent(events$date, events$event, labelLoc = "bottom") %>%
+  dyRangeSelector(dateWindow = c("2020-01-01", today))%>%
+  dyOptions(useDataTimezone = TRUE)
 ```
 
 ### Info
@@ -78,7 +78,7 @@ The indicator for the *Perceived Economic Situation* includes search terms that 
 keywords <- c("Inzidenz", "Coronafälle", "Testcenter", "Lockdown", "Pandemie")#
 Corona_AT_daily <- read.csv("https://raw.githubusercontent.com/anneval/MA_data/main/raw/at/corona_sa.csv")
 
-corona_sentiment <- Corona_AT_daily %>%
+corona_sentiment <- Corona_AT_daily[2192:2970,] %>%
   select(time,value) %>%
   ts_xts()
 
@@ -86,7 +86,7 @@ dygraph(corona_sentiment,group = "keywords")%>%
   dyAxis("x", drawGrid = FALSE)%>%
   dySeries("value", label = "Index")%>%
       dyRangeSelector(dateWindow = c("2020-01-01", today))%>%
-      dyEvent(events)%>%
+      dyEvent(events$date, events$event, labelLoc = "bottom") %>%
       dyOptions(useDataTimezone = TRUE)
 ```
 ### Info
@@ -105,7 +105,7 @@ The indicator for the *Perceived Corona Situation* includes search terms that re
 
 ## Row {.tabset .tabset-fade}
 
-```{r}
+```{r, include=F}
 keywords <- c("Shopping", "Klamotten", "Autokauf", "Restaurant", "Möbel")
 Consumption_AT_daily <- read.csv("https://raw.githubusercontent.com/anneval/MA_data/main/raw/at/corona_sa.csv")
 
@@ -117,7 +117,7 @@ dygraph(consumption_sentiment,group = "keywords")%>%
   dyAxis("x", drawGrid = FALSE)%>%
   dySeries("value", label = "Index")%>%
       dyRangeSelector(dateWindow = c("2020-01-01", today))%>%
-      dyEvent(events)%>%
+      dyEvent(events$date, events$event, labelLoc = "bottom") %>%
       dyOptions(useDataTimezone = TRUE)
 ```
 ### Info
@@ -136,7 +136,7 @@ The indicator for the *Perceived Consumption Situation* includes search terms th
 
 ## Row {.tabset .tabset-fade}
 
-```{r}
+```{r, include=F}
 keywords <- c("Jobagentur", "Arbeitslosengeld", "Jobcenter", "arbeitslos")
 Unemployment_AT_daily <- read.csv("https://raw.githubusercontent.com/anneval/MA_data/main/raw/at/corona_sa.csv")
 
@@ -148,7 +148,7 @@ dygraph(unemployment_sentiment,group = "keywords")%>%
   dyAxis("x", drawGrid = FALSE)%>%
   dySeries("value", label = "Index")%>%
       dyRangeSelector(dateWindow = c("2020-01-01", today))%>%
-      dyEvent(events)%>%
+      dyEvent(events$date, events$event, labelLoc = "bottom") %>%
       dyOptions(useDataTimezone = TRUE)
 ```
 ### Info
