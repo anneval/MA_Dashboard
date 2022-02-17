@@ -30,17 +30,14 @@ library(knitr)
 library(ggplot2)
 today <- as.character(Sys.Date())
 ```
-# Home
-
-# Economic Sentiment Index
-
+# Sentiment Indices
 ### trendEcon Austria
 
-"This dashboard is based on the work of [trendEcon](https://www.trendecon.org). The data are scraped from Google Trends through the use of the `trendecon` R-package. The sectoral indicators are slightly adapted to match Austrian search keywords (e.g. different stores). The main focus of this project is to test the accuracy of the main indicator (PES) in a VAR forecasting framework."
+This dashboard provides daily (economic) sentiment indicators based on Google searches in Austria. The data for the Google searches is scraped from Google Trends using the `trendecon` R-package. The project builds upon the work of [trendEcon](https://www.trendecon.org). Next to the presentation of the daily sentiment indices the goal is to evaluate the main indicator's (perceived economic situation) forecasting performance and accuracy in an GDP nowcasting exercise. To analyze its performance several models (VAR,AR,OLS) are being compared. 
 
 ## Row {.tabset .tabset-fade}
 
-### Perceived Economic Situation
+### Daily Sentiment Indices
 ```{r}
 keywords <- c("Wirtschaftskrise", "Kurzarbeit", "arbeitslos", "Insolvenz","Inflation") #
 Google_AT_daily <- read.csv("https://raw.githubusercontent.com/anneval/MA_data/main/raw/at/trendecon_sa.csv")
@@ -55,14 +52,21 @@ dygraph(economic_sentiment,group = "keywords")%>%
   dyAxis("x", drawGrid = FALSE)%>%
   dySeries("value", label = "Index")%>%
       dyRangeSelector(dateWindow = c("2020-01-01", today))%>%
+      dyEvent(events)%>%
       dyOptions(useDataTimezone = TRUE)
+
+
+###events change
+write.table(events,file="data.csv",sep=",",dec = " ")
+
+
 ```
 
 ### Info
 
 ###### Description
 
-The indicator for *Perceived Economic Situation* includes search terms that reflect people’s worries about the economy. For instance, people then google “economic crisis” (Wirtschaftskrise).
+The indicator for the *Perceived Economic Situation* includes search terms that reflect people’s worries about the economy. For instance, people might google “economic crisis” (Wirtschaftskrise) to get information.
 
 ###### Keywords
 
@@ -70,11 +74,99 @@ The indicator for *Perceived Economic Situation* includes search terms that refl
 - Kurzarbeit
 - arbeitslos
 - Insolvenz
-- Inflation
-
-[Download data](https://raw.githubusercontent.com/anneval/MA_data/main/raw/at/trendecon_sa.csv){target="_blank"}
 
 ## Row {.tabset .tabset-fade}
+
+```{r}
+keywords <- c("Inzidenz", "Coronafälle", "Testcenter", "Lockdown", "Pandemie")#
+Corona_AT_daily <- read.csv("https://raw.githubusercontent.com/anneval/MA_data/main/raw/at/corona_sa.csv")
+
+corona_sentiment <- Corona_AT_daily %>%
+  select(time,value) %>%
+  ts_xts()
+
+dygraph(corona_sentiment,group = "keywords")%>%
+  dyAxis("x", drawGrid = FALSE)%>%
+  dySeries("value", label = "Index")%>%
+      dyRangeSelector(dateWindow = c("2020-01-01", today))%>%
+      dyEvent(events)%>%
+      dyOptions(useDataTimezone = TRUE)
+```
+### Info
+
+###### Description
+
+The indicator for the *Perceived Corona Situation* includes search terms that reflect people’s worries about the current corona situations. For instance, people might google “incidence” (Inzidenz), to get information.
+
+###### Keywords
+
+- Inzidenz
+- Coronafälle
+- Testcenter
+- Lockdown
+- Pandemie
+
+## Row {.tabset .tabset-fade}
+
+```{r}
+keywords <- c("Shopping", "Klamotten", "Autokauf", "Restaurant", "Möbel")
+Consumption_AT_daily <- read.csv("https://raw.githubusercontent.com/anneval/MA_data/main/raw/at/corona_sa.csv")
+
+consumption_sentiment <- Corona_AT_daily %>%
+  select(time,value) %>%
+  ts_xts()
+
+dygraph(consumption_sentiment,group = "keywords")%>%
+  dyAxis("x", drawGrid = FALSE)%>%
+  dySeries("value", label = "Index")%>%
+      dyRangeSelector(dateWindow = c("2020-01-01", today))%>%
+      dyEvent(events)%>%
+      dyOptions(useDataTimezone = TRUE)
+```
+### Info
+
+###### Description
+
+The indicator for the *Perceived Consumption Situation* includes search terms that reflect people’s consumption behavior and thus gives indications for the current economic situations.
+
+###### Keywords
+
+- Shopping
+- Klamotten
+- Autokauf
+- Restaurant
+- Möbel
+
+## Row {.tabset .tabset-fade}
+
+```{r}
+keywords <- c("Jobagentur", "Arbeitslosengeld", "Jobcenter", "arbeitslos")
+Unemployment_AT_daily <- read.csv("https://raw.githubusercontent.com/anneval/MA_data/main/raw/at/corona_sa.csv")
+
+unemployment_sentiment <- Corona_AT_daily %>%
+  select(time,value) %>%
+  ts_xts()
+
+dygraph(unemployment_sentiment,group = "keywords")%>%
+  dyAxis("x", drawGrid = FALSE)%>%
+  dySeries("value", label = "Index")%>%
+      dyRangeSelector(dateWindow = c("2020-01-01", today))%>%
+      dyEvent(events)%>%
+      dyOptions(useDataTimezone = TRUE)
+```
+### Info
+
+###### Description
+
+The indicator for the *Perceived Unemployment Situation* includes search terms that reflect people’s search behavior regarding their current job situation and thus gives indications for the current unemployment situations.
+
+###### Keywords
+
+- Jobagentur
+- Arbeitslosengeld
+- Jobcenter
+- arbeitslos
+
 
 # Forecasting
 
