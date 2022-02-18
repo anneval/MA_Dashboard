@@ -107,7 +107,7 @@ The indicator for the *Perceived Corona Situation* includes search terms that re
 ### Daily Consumption Sentiment Indices
 ```{r}
 keywords <- c("Shopping", "Klamotten", "Autokauf", "Restaurant", "Möbel")
-Consumption_AT_daily <- read.csv("https://raw.githubusercontent.com/anneval/MA_data/main/raw/at/corona_sa.csv")
+Consumption_AT_daily <- read.csv("https://raw.githubusercontent.com/anneval/MA_data/main/raw/at/consumption_sa.csv")
 
 consumption_sentiment <- Corona_AT_daily %>%
   select(time,value) %>%
