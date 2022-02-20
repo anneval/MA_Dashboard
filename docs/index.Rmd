@@ -109,7 +109,7 @@ The indicator for the *Perceived Corona Situation* includes search terms that re
 keywords <- c("Shopping", "Klamotten", "Autokauf", "Restaurant", "Möbel")
 Consumption_AT_daily <- read.csv("https://raw.githubusercontent.com/anneval/MA_data/main/raw/at/consumption_sa.csv")
 
-consumption_sentiment <- Corona_AT_daily %>%
+consumption_sentiment <- Consumption_AT_daily %>%
   select(time,value) %>%
   ts_xts()
 
@@ -140,9 +140,9 @@ The indicator for the *Perceived Consumption Situation* includes search terms th
 ### Daily Unemployement Sentiment Indices
 ```{r}
 keywords <- c("Jobagentur", "Arbeitslosengeld", "Jobcenter", "arbeitslos")
-Unemployment_AT_daily <- read.csv("https://raw.githubusercontent.com/anneval/MA_data/main/raw/at/corona_sa.csv")
+Unemployment_AT_daily <- read.csv("https://raw.githubusercontent.com/anneval/MA_data/main/raw/at/unemployment_sa.csv")
 
-unemployment_sentiment <- Corona_AT_daily %>%
+unemployment_sentiment <- Unemployment_AT_daily %>%
   select(time,value) %>%
   ts_xts()
 
@@ -161,10 +161,42 @@ The indicator for the *Perceived Unemployment Situation* includes search terms t
 
 ###### Keywords
 
-- Jobagentur
 - Arbeitslosengeld
 - Jobcenter
 - arbeitslos
+
+## Row {.tabset .tabset-fade}
+
+### Daily Housing Sentiment Indices
+```{r}
+keywords <- c("Immobilienfinanzierung", "immobilienscout24", "Immobilien","Makler")
+Housing_AT_daily <- read.csv("https://raw.githubusercontent.com/anneval/MA_data/main/raw/at/housing_sa.csv")
+
+housing_sentiment <- Housing_AT_daily %>%
+  select(time,value) %>%
+  ts_xts()
+
+dygraph(housing_sentiment,group = "keywords")%>%
+  dyAxis("x", drawGrid = FALSE)%>%
+  dySeries("value", label = "Index")%>%
+      dyRangeSelector(dateWindow = c("2020-01-01", today))%>%
+     # dyEvent(events$date, events$event, labelLoc = "bottom") %>%
+      dyOptions(useDataTimezone = TRUE)
+```
+### Info
+
+###### Description
+
+The indicator for the *Perceived Housing Situation* includes search terms that reflect people’s search behavior regarding their current job situation and thus gives indications for the current unemployment situations.
+
+###### Keywords
+
+- Immobilienfinanzierung
+- immobilienscout24
+- Immobilien
+- Makler
+
+## Row {.tabset .tabset-fade}
 
 # Comparison PES
 
