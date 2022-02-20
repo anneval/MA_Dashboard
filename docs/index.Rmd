@@ -44,7 +44,7 @@ keywords <- c("Wirtschaftskrise", "Kurzarbeit", "arbeitslos", "Insolvenz","Infla
 Google_AT_daily <- read.csv("https://raw.githubusercontent.com/anneval/MA_data/main/raw/at/trendecon_sa.csv")
 
 economic_sentiment <- Google_AT_daily %>%
-  select(time,value) %>%
+  dplyr::select(time,value) %>%
   ts_xts()
 
 events <- read.csv2("https://raw.githubusercontent.com/anneval/MA_Dashboard/main/docs/Events.csv")
@@ -78,7 +78,7 @@ keywords <- c("Inzidenz", "Coronafälle", "Testcenter", "Lockdown", "Pandemie")#
 Corona_AT_daily <- read.csv("https://raw.githubusercontent.com/anneval/MA_data/main/raw/at/corona_sa.csv")
 
 corona_sentiment <- Corona_AT_daily[2192:2970,] %>%
-  select(time,value) %>%
+  dplyr::select(time,value) %>%
   ts_xts()
 
 dygraph(corona_sentiment,group = "keywords")%>%
@@ -110,7 +110,7 @@ keywords <- c("Shopping", "Klamotten", "Autokauf", "Restaurant", "Möbel")
 Consumption_AT_daily <- read.csv("https://raw.githubusercontent.com/anneval/MA_data/main/raw/at/consumption_sa.csv")
 
 consumption_sentiment <- Consumption_AT_daily %>%
-  select(time,value) %>%
+  dplyr::select(time,value) %>%
   ts_xts()
 
 dygraph(consumption_sentiment,group = "keywords")%>%
@@ -143,7 +143,7 @@ keywords <- c("Jobagentur", "Arbeitslosengeld", "Jobcenter", "arbeitslos")
 Unemployment_AT_daily <- read.csv("https://raw.githubusercontent.com/anneval/MA_data/main/raw/at/unemployment_sa.csv")
 
 unemployment_sentiment <- Unemployment_AT_daily %>%
-  select(time,value) %>%
+ dplyr::select(time,value) %>%
   ts_xts()
 
 dygraph(unemployment_sentiment,group = "keywords")%>%
@@ -173,7 +173,7 @@ keywords <- c("Immobilienfinanzierung", "immobilienscout24", "Immobilien","Makle
 Housing_AT_daily <- read.csv("https://raw.githubusercontent.com/anneval/MA_data/main/raw/at/housing_sa.csv")
 
 housing_sentiment <- Housing_AT_daily %>%
-  select(time,value) %>%
+  dplyr::select(time,value) %>%
   ts_xts()
 
 dygraph(housing_sentiment,group = "keywords")%>%
