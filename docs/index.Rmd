@@ -52,11 +52,12 @@ getMonthDay <- 'function(d) {
 # Economic Indices
 ### trendEcon Austria
 
-This dashboard provides daily (economic) sentiment indicators based on Google searches in Austria. The data for the Google searches is scraped from Google Trends using the `trendecon` R-package. The project builds upon the work of [trendEcon](https://www.trendecon.org). Next to the presentation of the daily sentiment indices the goal is to evaluate the main indicator's (daily  economic sentiment index)  nowcasting performance and accuracy in an GDP psequdo out of sample forecasting exercise. To analyze the indicators performance several models (VAR,ARIMA,OLS) are being compared. 
- 
+This dashboard provides daily (economic) sentiment indicators based on Google searches in Austria. The data for the Google searches is scraped from Google Trends using the `trendecon` R-package. The project builds upon the work of [trendEcon](https://www.trendecon.org). The construction of the daily sentiment indices is part of the Master thesis: "Nowcasting GDP growth in Austria via the construction of a daily
+economic sentiment index using Google Trends". Next to the presentation of the daily sentiment indices the goal is to evaluate the main indicator's (daily economic sentiment index) nowcasting performance and accuracy in an GDP psequdo-out -of-sample forecasting exercise. To analyze the indicators performance several models (OLS,AR,VAR) are being compared.
+
 ## Row {.tabset .tabset-fade}
 
-### Daily Economic Sentiment Indices
+### Daily Economic Sentiment Index
 ```{r}
 keywords <- c("Wirtschaftskrise", "Kurzarbeit", "arbeitslos", "Insolvenz","Inflation") #
 Google_AT_daily <- read.csv("https://raw.githubusercontent.com/anneval/MA_data/main/raw/at/trendecon_sa.csv")
@@ -101,7 +102,7 @@ The indicator for the *Perceived Economic Situation* includes search terms that 
 
 ## Row {.tabset .tabset-fade}
 
-### Daily Consumption Sentiment Indices
+### Daily Consumption Sentiment Index
 ```{r}
 keywords <- c("Shopping", "Klamotten", "Autokauf", "Restaurant", "Möbel")
 Consumption_AT_daily <- read.csv("https://raw.githubusercontent.com/anneval/MA_data/main/raw/at/consumption_sa.csv")
@@ -143,7 +144,7 @@ The indicator for the *Perceived Consumption Situation* includes search terms th
 
 ## Row {.tabset .tabset-fade}
 
-### Daily Unemployement Sentiment Indices
+### Daily Unemployement Sentiment Index
 ```{r}
 keywords <- c("Jobagentur", "Arbeitslosengeld", "Jobcenter", "arbeitslos")
 Unemployment_AT_daily <- read.csv("https://raw.githubusercontent.com/anneval/MA_data/main/raw/at/unemployment_sa.csv")
@@ -184,7 +185,7 @@ The indicator for the *Perceived Unemployment Situation* includes search terms t
 
 ## Row {.tabset .tabset-fade}
 
-### Daily Housing Sentiment Indices
+### Daily Housing Sentiment Index
 ```{r}
 keywords <- c("Immobilienfinanzierung", "immobilienscout24", "Immobilien","Makler")
 Housing_AT_daily <- read.csv("https://raw.githubusercontent.com/anneval/MA_data/main/raw/at/housing_sa.csv")
@@ -234,7 +235,7 @@ For some indicators, such as *Cultural Events* -- which includes demand for rest
 
 
 ## Row {.tabset .tabset-fade}
-### Daily Corona Sentiment Indices
+### Daily Corona Sentiment Index
 ```{r}
 keywords <- c("Inzidenz", "Coronafälle", "Testcenter", "Lockdown", "Pandemie")#
 Corona_AT_daily <- read.csv("https://raw.githubusercontent.com/anneval/MA_data/main/raw/at/corona_sa.csv", skip=2192,header = FALSE, col.names = c("time", "value"))
