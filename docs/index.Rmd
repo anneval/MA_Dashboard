@@ -9,6 +9,7 @@ output:
       #base_font: !expr bslib::font_google("Prompt")
       #code_font: !expr bslib::font_google("JetBrains Mono")
     orientation: rows
+    version: 4
     #source_code: embed
     vertical_layout: scroll
     social: ["menu"]
@@ -34,8 +35,8 @@ today <- as.character(Sys.Date())
 # Sentiment Indices
 ### trendEcon Austria
 
-This dashboard provides daily (economic) sentiment indicators based on Google searches in Austria. The data for the Google searches is scraped from Google Trends using the `trendecon` R-package. The project builds upon the work of [trendEcon](https://www.trendecon.org). Next to the presentation of the daily sentiment indices the goal is to evaluate the main indicator's (perceived economic situation)  nowcasting performance and accuracy in an GDP psequdo out of sample forecasting exercise. To analyze the indicators performance several models (VAR,ARIMA,OLS) are being compared. 
-
+This dashboard provides daily (economic) sentiment indicators based on Google searches in Austria. The data for the Google searches is scraped from Google Trends using the `trendecon` R-package. The project builds upon the work of [trendEcon](https://www.trendecon.org). Next to the presentation of the daily sentiment indices the goal is to evaluate the main indicator's (daily  economic sentiment index)  nowcasting performance and accuracy in an GDP psequdo out of sample forecasting exercise. To analyze the indicators performance several models (VAR,ARIMA,OLS) are being compared. 
+ 
 ## Row {.tabset .tabset-fade}
 
 ### Daily Economic Sentiment Indices
