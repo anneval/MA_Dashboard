@@ -1,5 +1,3 @@
-#### STILL HAVE TO ADJUST TO MINE
-
 # History files
 .Rhistory
 .Rapp.history
@@ -40,5 +38,13 @@ vignettes/*.pdf
 # R Environment Variables
 .Renviron
 
-# Log files
-*.log
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+*.code-workspace
+
+# Local History for Visual Studio Code
+.history/
+docs/
