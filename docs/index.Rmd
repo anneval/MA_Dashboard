@@ -290,7 +290,7 @@ The indicator for the *Perceived Corona Situation* includes search terms that re
 #### **Weekly Indicators**
 ### {style="border: 0px; background: none"}
 
-The following figure compares the daily economic sentiment index to three other recently developed higher frequency GDP indicators - the weekly OeNB GDP indicator, the Weekly WIFO Economic Index (WWWI), and the OECD weekly tracker of GDP growth. To directly compare all four indicators, I temporally aggregate the DESI to the lower weekly frequency. The figure below plots the weekly indicators starting in January 2020. All four indicators capture the economic downturn at the end of the first quarter of 2020 due to the Covid19 outbreak. Compared to the other three indicators, the constructed Google based DESI can identify the decline of economic activity early on. Moreover, the DESI depicts a more profound downfall of the economy. Over the rest of 2020, the four indicators seem to co-move. Between the end of 2020 and the beginning of 2021, the WWWI and the OECD weekly tracker start to diverge from the DESI and the OEnB weekly tracker. In the middle of 2021, the indices slightly converge again, with the WWWI and the OECD weekly tracker remaining on higher levels. None of the indicators is able to properly capture the GDP rebound starting in the third quarter of 2020. Overall, the four indices follow a similar pattern and mostly show divergence in times of increased economic distress. This seems reasonable due to the depth of the different modeling approaches (e.g., linear or nonlinear) and the different data sources or data combinations used. 
+The following figure compares the daily economic sentiment index to three other recently developed higher frequency GDP indicators - the weekly OeNB GDP indicator, the Weekly WIFO Economic Index (WWWI), and the OECD weekly tracker of GDP growth. To directly compare all four indicators, I temporally aggregate the DESI to the lower weekly frequency. The figure below plots the weekly indicators starting in January 2020. All four indicators capture the economic downturn at the end of the first quarter of 2020 due to the Covid19 outbreak. Compared to the other three indicators, the constructed Google based DESI can identify the decline of economic activity early on. Moreover, the DESI depicts a more profound downfall of the economy. Over the rest of 2020, the four indicators seem to co-move. Between the end of 2020 and the beginning of 2021, the WWWI and the OECD weekly tracker start to diverge from the DESI and the OeNB weekly tracker. In the middle of 2021, the indices slightly converge again, with the WWWI and the OECD weekly tracker remaining on higher levels. None of the indicators is able to properly capture the GDP rebound starting in the third quarter of 2020. Overall, the four indices follow a similar pattern and mostly show divergence in times of increased economic distress. This seems reasonable due to the depth of the different modeling approaches (e.g., linear or nonlinear) and the different data sources or data combinations used. 
 
 ```{r,echo = FALSE}
 ### Change from daily to weekly frequency
@@ -396,10 +396,10 @@ ts_dygraphs(ts_c(
   `OECD Weekly Tracker` = oecd * 100,
   `OENB Weekly Indicator` = wecon_oenb_test
 ))  %>%
-  dySeries("Google DESI", strokeWidth=2, color = "black") %>%
-  dySeries("WIFO WWWI", strokeWidth = 2,  color = "red") %>%
-  dySeries("OECD Weekly Tracker", strokeWidth = 2,  color = "green") %>%
-  dySeries("OENB Weekly Indicator", strokeWidth = 2,  color = "steelblue") %>%
+  dySeries("Google DESI", strokeWidth=1, color = "black") %>%
+  dySeries("WIFO WWWI", strokeWidth = 1,  color = "red") %>%
+  dySeries("OECD Weekly Tracker", strokeWidth = 1,  color = "green") %>%
+  dySeries("OENB Weekly Indicator", strokeWidth = 1,  color = "steelblue") %>%
   dyAxis("x", drawGrid = FALSE) %>%
   dyRangeSelector()%>%
   #dyRangeSelector(dateWindow = c(as.Date("2020-01-01"), Sys.Date()))%>%
@@ -415,10 +415,18 @@ data_monthly <- ts_c(
   `OECD Weekly Tracker` = oecd * 100,
   `OENB Weekly Indicator` = wecon_oenb_test
 ) %>%
-  ts_frequency("month")
+ts_frequency("month")
+
 ts_dygraphs(ts_c(
   `Perceived Housing Situation` = data_monthly)) %>%
-  dyRangeSelector()
+  dySeries("Google DESI", strokeWidth=1, color = "black") %>%
+  dySeries("WIFO WWWI", strokeWidth = 1,  color = "red") %>%
+  dySeries("OECD Weekly Tracker", strokeWidth = 1,  color = "green") %>%
+  dySeries("OENB Weekly Indicator", strokeWidth = 1,  color = "steelblue") %>%
+  dyAxis("x", drawGrid = FALSE) %>%
+  dyRangeSelector()%>%
+  #dyRangeSelector(dateWindow = c(as.Date("2020-01-01"), Sys.Date()))%>%
+  dyOptions(useDataTimezone = TRUE)
 ```
 
 ### Info
@@ -431,13 +439,20 @@ The WWWI is a weekly estimate of the real economic activity of the Austrian econ
 
 The OECD Weekly Tracker of GDP growth applies a two-step machine learning model (“neural network”) to a panel of GT data to aggregate information from search behavior related to consumption, labor markets, housing, trade, industrial activity, and economic uncertainty. The tracker provides nowcasts of year-on-year GDP growth rates with a 5-day delay. See [OECD Weekly Tracker of economic activity](https://www.oecd.org/economy/weekly-tracker-of-gdp-growth/)
 
-# Forecasting
+# Nowcasting
 
-Expanding OLS
+Psequdo-out-of-sample forcast with an expanding window OLS estimation
 
-VAR
+```{r}
 
-ARIMA
+```
+
+
+VAR(2)
+
+```{r}
+
+```
 
 
 
