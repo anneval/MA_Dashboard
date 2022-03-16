@@ -8,11 +8,7 @@ get_stage("install") %>%
   add_step(step_install_cran("htmlwidgets")) %>%
   add_step(step_install_cran("knitr")) %>%
   add_step(step_install_cran("timetk")) %>%
-  add_step(step_install_cran("tsbox"))%>%
-  add_step(step_install_cran("readr"))%>%
-  add_step(step_install_cran("dplyr")) %>%
-  add_step(step_install_cran("ggplot2")) %>%
-  add_step(step_install_cran("tidyr")) 
+  add_step(step_install_cran("tsbox")
 
 get_stage("before_deploy") %>%
   add_step(step_setup_ssh()) %>%
@@ -20,4 +16,4 @@ get_stage("before_deploy") %>%
 
 get_stage("deploy") %>%
   add_code_step(rmarkdown::render("docs/index.Rmd")) %>%
-   add_step(step_do_push_deploy())
+  add_step(step_do_push_deploy(commit_paths = "docs/index.html"))
