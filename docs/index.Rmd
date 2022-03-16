@@ -440,22 +440,55 @@ The WWWI is a weekly estimate of the real economic activity of the Austrian econ
 The OECD Weekly Tracker of GDP growth applies a two-step machine learning model (“neural network”) to a panel of GT data to aggregate information from search behavior related to consumption, labor markets, housing, trade, industrial activity, and economic uncertainty. The tracker provides nowcasts of year-on-year GDP growth rates with a 5-day delay. See [OECD Weekly Tracker of economic activity](https://www.oecd.org/economy/weekly-tracker-of-gdp-growth/)
 
 # Nowcasting
+## Row {.tabset .tabset-fade}
+### Expanding window OLS
 
-Psequdo-out-of-sample forcast with an expanding window OLS estimation
-
+Psequdo-out-of-sample forcast 
 ```{r}
 
 ```
+### Accuracy
 
 
-VAR(2)
+## Row {.tabset .tabset-fade}
+### VAR(2)
 
 ```{r}
 
+ts.plot(ts(oecd*100,frequency = 52, start = c(2020,1)),
+        ts(wwwi,frequency = 52, start = c(2020,1)),
+        ts(google_w*5,frequency = 52, start = c(2020,1)),
+        ts(wecon_oenb_test,frequency = 52, start = c(2020,10)),
+        col = c("darkgreen", "red","black","steelblue"),
+        xlab = "Time",
+        main = "",
+        lwd = 1
+        )
+legend("bottomright", c("OECD Weekly Tracker","WIFO WWWI", "Google DESI", "OENB Weekly Indicator"), col=c("darkgreen", "red","black","steelblue"), lty=c(1), xpd=TRUE, bty="b",cex=0.75
+       )
 ```
 
 
+### Method
 
+```{r}
+
+ts.plot(ts(oecd*100,frequency = 52, start = c(2020,1)),
+        ts(wwwi,frequency = 52, start = c(2020,1)),
+        ts(google_w*5,frequency = 52, start = c(2020,1)),
+        ts(wecon_oenb_test,frequency = 52, start = c(2020,10)),
+        col = c("darkgreen", "red","black","steelblue"),
+        xlab = "Time",
+        main = "",
+        lwd = 1
+        )
+legend("bottomright", c("OECD Weekly Tracker","WIFO WWWI", "Google DESI", "OENB Weekly Indicator"), col=c("darkgreen", "red","black","steelblue"), lty=c(1), xpd=TRUE, bty="b",cex=0.75
+       )
+```
+
+### Accuracy
+
+### Robustness
 
 
 
