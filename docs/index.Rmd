@@ -606,13 +606,12 @@ stargazer(VAR1_est$varresult, type = "html", header = F, title = "VAR(2)",
 
 ### Model diagnostics
 
-## Row 
+## Row {.tabset .tabset-fade}
 
 ### Forecast
 ```{r,fig.dim = c(6, 6)}
 plot(forecast_VAR1)
 ```
-## Row 
 
 ### Accuracy
 
