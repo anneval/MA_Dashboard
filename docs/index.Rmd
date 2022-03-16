@@ -439,56 +439,186 @@ The WWWI is a weekly estimate of the real economic activity of the Austrian econ
 
 The OECD Weekly Tracker of GDP growth applies a two-step machine learning model (“neural network”) to a panel of GT data to aggregate information from search behavior related to consumption, labor markets, housing, trade, industrial activity, and economic uncertainty. The tracker provides nowcasts of year-on-year GDP growth rates with a 5-day delay. See [OECD Weekly Tracker of economic activity](https://www.oecd.org/economy/weekly-tracker-of-gdp-growth/)
 
-# Nowcasting
-## Row {.tabset .tabset-fade}
-### Expanding window OLS
+# <font size="3">Expanding window OLS</font> {data-navmenu="Nowcasting"}
+#### **Expanding Window OLS**
+### {style="border: 0px; background: none"}
 
-Psequdo-out-of-sample forcast 
+To analyze the predictive and nowcasting performance of the constructed daily sentiment index, I construct a pseudo-out-of-sample forecasting exercise to compare the in and out-of-sample GDP nowcasting ability of the daily economic sentiment index (DESI). Instead of simply splitting the data into a train and a validation set, I estimate all models using a recursive or expanding window strategy. Thus the initial sample size of the training data includes 19 observations or 30\% of the original data set and increases each round continuously. As this gives multiple estimations instead of only one, I account for possible changes in the structure of the data over time. The figures below present the graphical representation of each nowcasting model and its ability to precict GDP growth. 
+
 ```{r}
-
+Data <-"/Users/annevalder/Desktop/Uni/WU WIEN/SoSe_21/MA/GIT/All.RData"
+load(Data)
 ```
-### Accuracy
-
 
 ## Row {.tabset .tabset-fade}
-### VAR(2)
+### Model1
+
+Model 1: $GDP_t = \beta_0 +\beta_1 GDP_{t-1} + \epsilon_t$
 
 ```{r}
+ts.plot(ts(Data[20:63,1],frequency = 4, start = c(2010,4),end = c(2021,3)),
+          ts(pred1,frequency = 4, start = c(2010,4),end = c(2021,3)),
+    col = c("black", "red"),
+    xlab = "Year", 
+    ylab = "GDP growth (%)", 
+    lwd = 1)
+legend("bottomleft", c("GDP growth", "AR(1)"), col=c("black","red"), lty=c(1),
+        xpd=TRUE, bty="b", cex=0.75
+      )
+```
 
-ts.plot(ts(oecd*100,frequency = 52, start = c(2020,1)),
-        ts(wwwi,frequency = 52, start = c(2020,1)),
-        ts(google_w*5,frequency = 52, start = c(2020,1)),
-        ts(wecon_oenb_test,frequency = 52, start = c(2020,10)),
-        col = c("darkgreen", "red","black","steelblue"),
-        xlab = "Time",
-        main = "",
-        lwd = 1
-        )
-legend("bottomright", c("OECD Weekly Tracker","WIFO WWWI", "Google DESI", "OENB Weekly Indicator"), col=c("darkgreen", "red","black","steelblue"), lty=c(1), xpd=TRUE, bty="b",cex=0.75
+-------------------------------------
+
+### Model2
+
+Model 2:  $GDP_t = \beta_0 +\beta_1 CCI_{t} +\epsilon_t$
+
+```{r}
+ts.plot(ts(Data[19:63,1],frequency = 4, start = c(2010,3)),
+          ts(pred2,frequency = 4, start = c(2010,3)),
+    col = c("black", "red"),
+    xlab = "Year", 
+    ylab = "GDP growth (%)", 
+    lwd = 1)
+legend("bottomleft", c("GDP growth", "CCI"), col=c("black","red"), lty=c(1),
+        xpd=TRUE, bty="b", cex=0.75
+      )
+```
+
+-------------------------------------
+
+### Model 3
+
+Model 3:  $GDP_t = \beta_0 +\beta_1 GT_{t,i} +\epsilon_t$
+
+```{r}
+plotexp_3 <- ts.plot(ts(Data[19:63,1],frequency = 4, start = c(2010,3)),
+          ts(pred3,frequency = 4, start = c(2010,3)),
+    col = c("black", "red"),
+    xlab = "Year", 
+    ylab = "GDP growth (%)", 
+    lwd = 1)
+legend("bottomleft", c("GDP growth", "DESI"), col=c("black","red"), lty=c(1),
+        xpd=TRUE, bty="b", cex=0.75
+      )
+```
+
+-------------------------------------
+
+### Model 4&5
+
+Model 4: $GDP_t = \beta_0 +\beta_1 GDP_{t-1} + \beta_2 CCI_{t} + \epsilon_t$
+
+Model 5: $GDP_t = \beta_0 +\beta_1 GDP_{t-1} + \beta_2 GT_{t,i} + \epsilon_t$
+
+
+```{r}
+plotexp_5 <- ts.plot(ts(Data[20:63,1],frequency = 4, start = c(2010,4)),
+          ts(pred4,frequency = 4, start = c(2010,4)),
+          ts(pred5,frequency = 4, start = c(2010,4)),
+    col = c("black", "red","blue"),
+    xlab = "Year", 
+   ylab = "GDP growth (%)", 
+    lwd = 1)
+legend("bottomleft", c("GDP growth","CCI & AR(1)" ,"DESI & AR(1)"), col=c("black","red","blue"), lty=c(1), xpd=TRUE, bty="b",cex=0.75
        )
 ```
 
+-------------------------------------
 
-### Method
+### Model 6&7
+
+Model 6: $GDP_t = \beta_0 +\beta_1 GDP_{t-1} + \beta_2 CCI_{t} + \beta_3 GT_{t} + \epsilon_t$
+
+Model 7: $GDP_t = \beta_0 + \beta_1 CCI_{t} + \beta_2 GT_{t} + \epsilon_t$
 
 ```{r}
-
-ts.plot(ts(oecd*100,frequency = 52, start = c(2020,1)),
-        ts(wwwi,frequency = 52, start = c(2020,1)),
-        ts(google_w*5,frequency = 52, start = c(2020,1)),
-        ts(wecon_oenb_test,frequency = 52, start = c(2020,10)),
-        col = c("darkgreen", "red","black","steelblue"),
-        xlab = "Time",
-        main = "",
-        lwd = 1
-        )
-legend("bottomright", c("OECD Weekly Tracker","WIFO WWWI", "Google DESI", "OENB Weekly Indicator"), col=c("darkgreen", "red","black","steelblue"), lty=c(1), xpd=TRUE, bty="b",cex=0.75
+plotexp_7 <- ts.plot(ts(Data[20:63,1],frequency = 4, start = c(2010,3)),
+          ts(pred6,frequency = 4, start = c(2010,3)),
+          ts(pred7[2:45,],frequency = 4, start = c(2010,3)),
+    col = c("black", "red","blue"),
+    xlab = "Year", 
+    ylab = "GDP growth (%)", 
+    lwd = 1)
+legend("bottomleft", c("GDP growth","AR(1) & CCI & DESI", "CCI & DESI"), col=c("black","red","blue"), lty=c(1), xpd=TRUE, bty="b",cex=0.75
        )
 ```
 
+-------------------------------------
+
+## Row {.tabset .tabset-fade}
+
 ### Accuracy
 
-### Robustness
+```{r}
+comparison_MAE_OOS <- rbind("MAE_OLS_OOS" = MAE_OLS_OOS1,MAE_OLS_OOS2,MAE_OLS_OOS3,MAE_OLS_OOS4,MAE_OLS_OOS5,MAE_OLS_OOS6,MAE_OLS_OOS7)
+
+comparison_RMSE_OOS <- rbind("RMSE_OLS_OOS" = RMSE_OLS_OOS1,RMSE_OLS_OOS2,RMSE_OLS_OOS3,RMSE_OLS_OOS4,RMSE_OLS_OOS5,RMSE_OLS_OOS6,RMSE_OLS_OOS7)
+
+comparison_RMSE_IS <- rbind("RMSE_OLS_IS" = RMSE_OLS_IS1,RMSE_OLS_IS2,RMSE_OLS_IS3,RMSE_OLS_IS4,RMSE_OLS_IS5,RMSE_OLS_IS6,RMSE_OLS_IS7)
+
+ 
+comparison_OOS <- data.frame(     "RMSE_OOS" = comparison_RMSE_OOS, 
+                                  "RMSE_IS" = comparison_RMSE_IS,
+                                  "MAE_OOS" = comparison_MAE_OOS)
+
+rownames(comparison_OOS) <- c("AR(1)","CCI","DESI","AR(1) & CCI","AR(1) & DESI","AR(1) & CCI & DESI","CCI & DESI")
+
+```
 
 
+```{r, results='asis', include=F}
+print(xtable::xtable(comparison_OOS, label = "tab:accEXPW", caption = ""), type="html")
+```
 
+```{r}
+knitr::kable(comparison_OOS, digits=3,col.names = c("RMSE (OOS)","RMSE (in-sample)","MAE (OOS)") ,caption = "Expanding window OLS estimation - accuracy of the pseudo-out-of-sample forecasting.",align = "c")
+```
+
+# <font size="3">VAR(2)</font> {data-navmenu="Nowcasting"}
+#### **VAR(2)**
+### {style="border: 0px; background: none"}
+
+ and to rely more on a data-driven approach while analyzing the nowcasting performance of the DESI in a multivariate time series setting, I extend the analysis by constructing a VAR model. 
+ 
+\begin{equation}
+\label{eq8}
+    \mathbf{y_{t}} = \mathbf{c} + A_1 \mathbf{y_{t-1}} + ... + A_p \mathbf{y_{t-p}} + \boldsymbol{\epsilon_t}, \qquad \epsilon_t \sim \mathcal{N}_M(0,\,\Sigma)\ ,  \quad A_i(i = 1, \dotsc, p)
+\end{equation}
+
+Vector Autoregressive Model with 2 lags, where: $\mathbf{y_{t}}= [GDP_t, CCI_t, DESI_t]$
+
+
+## Row {data-height=600}
+
+### Estimation Results
+
+
+```{r, results='asis',fig.align="center"}
+library(stargazer)
+stargazer(VAR1_est$varresult, type = "html", header = F, title = "VAR(2)",  
+          column.labels = c("GDP","CCI","DESI"), 
+          dep.var.labels = c(""), 
+          covariate.labels = c("$GDP_{t-1}$","$CCI_{t-1}$","$DESI_{t-1}$",
+                               "$GDP_{t-2$","$CCI_{t-2}$","$DESI_{t-2}$",
+                               "constant"))
+```
+
+### Model diagnostics
+
+## Row 
+
+### Forecast
+```{r,fig.dim = c(6, 6)}
+plot(forecast_VAR1)
+```
+## Row 
+
+### Accuracy
+
+```{r,fig.align="center"}
+#To assure the statistical quality and fit of the VAR(2) model, the residuals should have properties similar to a white noise process. Therefore, I run 
+#tests on the independence (i.e., autocorrelation), homoscedasticity (constant residual variance), and normality of the residuals. First, to test for autocorrelation in the model's residuals, I use the Portmanteau- and Breusch-Godfrey tests for serial correlation. Both tests reject the Null-hypothesis of no-autocorrelation, which implies that the residuals are independent. Next, I test for homoscedasticity using the ARCH-LM test. Since the Null-hypothesis that the squared residuals are a sequence of white noise cannot be rejected, I conclude that the residuals are homoscedastic. Last, I test if the residuals follow a normal distribution using the Jarque-Bera test. Due to a very small p-value, the Null-hypothesis, that the data is normally distributed is rejected. The cause for this is most likely the large outliers caused by the Covid19 crisis. Technically, the normality of residuals is desirable but not necessary, especially as the focus here is on prediction and not on inference. Violations of the normality condition can lead to problems when calculating confidence intervals and significance tests due to unreliable standard errors \parencite{wooldridge2012introductory}.\footnote{See Appendix section \ref{ModelResid} Table \ref{Modeldiagnostics} for detailed test results and figures.}
+
+#plot(forecast_VAR1)
+```
