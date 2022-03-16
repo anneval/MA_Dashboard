@@ -91,7 +91,7 @@ ts_dygraphs(ts_c(
 
 ###### Description
 
-The sentiment indicator for the *Perceived Economic Situation* consists of Goolge search terms that aim to reflect people’s concerns about the current economic situation. For instance, people might search for “economic crisis” (Wirtschaftskrise) to get information.  
+The sentiment indicator for the *Perceived Economic Situation* consists of Goolge search terms that aim to reflect people’s concerns about the current economic situation. For instance, people might search for "Wirtschaftskrise" (= economic crisis) to get information.  
 
 ###### Keywords
 
@@ -134,15 +134,17 @@ ts_dygraphs(ts_c(
 
 ###### Description
 
-The indicator for the *Perceived Consumption Situation* includes search terms that reflect people’s consumption behavior and thus gives indications for the current economic situations.
+The sentiment indicator for the *Perceived Consumption Situation* consists of Goolge search terms that reflect people’s consumption behavior and thus gives indications for the current economic situations. For instance, people might search for "Restaurant" to get information.  
 
 ###### Keywords
 
-- Shopping
-- Klamotten
-- Autokauf
-- Restaurant
-- Möbel
+- shopping
+- clothing ("Klamotten")
+- car sale ("Autokauf")
+- restaurant
+- furniture ("Möbel")
+
+[Download data](https://github.com/anneval/MA_data/blob/main/raw/at/consumption_sa.csv){target="_blank"}
 
 ## Row {.tabset .tabset-fade}
 
@@ -181,9 +183,11 @@ The indicator for the *Perceived Unemployment Situation* includes search terms t
 
 ###### Keywords
 
-- Arbeitslosengeld
+- unemployment benefit ("Arbeitslosengeld")
 - Jobcenter
-- arbeitslos
+- unemployed ("arbeitslos")
+
+[Download data](https://github.com/anneval/MA_data/blob/main/raw/at/unemployment_sa.csv){target="_blank"}
 
 ## Row {.tabset .tabset-fade}
 
@@ -218,14 +222,16 @@ ts_dygraphs(ts_c(
 
 ###### Description
 
-The indicator for the *Perceived Housing Situation* includes search terms that reflect people’s search behavior regarding their current job situation and thus gives indications for the current unemployment situations.
+The indicator for the *Perceived Housing Situation* includes search terms that reflect people’s search behavior regarding their current interest in the housing market and its prices and thus gives indications for the current economic situations.
 
 ###### Keywords
 
-- Immobilienfinanzierung
+- mortgaging ("Immobilienfinanzierung")
 - immobilienscout24
-- Immobilien
-- Makler
+- real estate ("Immobilien")
+- real estate agent ("Makler")
+
+[Download data](https://github.com/anneval/MA_data/blob/main/raw/at/housing_sa.csv){target="_blank"}
 
 ## Row
 
@@ -233,8 +239,7 @@ The indicator for the *Perceived Housing Situation* includes search terms that r
 #### **Corona Indicator**
 ### {style="border: 0px; background: none"}
 
-For some indicators, such as *Cultural Events* -- which includes demand for restaurants, cinemas, concerts etc. -- or *Gardening and Home Improvement* (aka do-it-yourself articles), there is no preexisting, well-established indicator to compare our search-based indicators with. Nevertheless these indicators appear meaningful, as we are observing substantial changes in searches for these goods and services compared to normal times. These indicators will therefore provide valuable information on whether the economy is going back to normal as lock-down measures are lifted. In the beginning, some people, especially people in risk groups, may still be be reluctant to go, for example, to restaurants or stroll around shopping malls because they are afraid of contracting the virus.
-
+The following figure illustrates the *Daily Corona Sentiment Index*. The index includes searches for incidence, Covid cases, test center, lockdown and pandemic. There is no preexisting, well-established indicator to compare this search-based indicators with. Nevertheless it mirrors the public's perception on how good or bad the current Covid situation is developing. 
 
 ## Row {.tabset .tabset-fade}
 ### Daily Corona Sentiment Index
@@ -268,20 +273,24 @@ ts_dygraphs(ts_c(
 
 ###### Description
 
-The indicator for the *Perceived Corona Situation* includes search terms that reflect people’s worries about the current corona situations. For instance, people might google “incidence” (Inzidenz), to get information.
+The indicator for the *Perceived Corona Situation* includes search terms that reflect people’s worries about the current corona situations. For instance, people might google "Inzidenz" (= incidence), to get information.
 
 ###### Keywords
 
-- Inzidenz
-- Coronafälle
-- Testcenter
+- incidence ("Inzidenz")
+- Covid cases ("Coronafälle")
+- test center ("Testcenter")
 - Lockdown
-- Pandemie
+- pandemic ("Pandemie")
+
+[Download data](https://github.com/anneval/MA_data/blob/main/raw/at/corona_sa.csv){target="_blank"}
+
 
 # Weekly Indices
 #### **Weekly Indicators**
 ### {style="border: 0px; background: none"}
 
+The following figure shows the
 For some indicators, such as *Cultural Events* -- which includes demand for restaurants, cinemas, concerts etc. -- or *Gardening and Home Improvement* (aka do-it-yourself articles), there is no preexisting, well-established indicator to compare our search-based indicators with. Nevertheless these indicators appear meaningful, as we are observing substantial changes in searches for these goods and services compared to normal times. These indicators will therefore provide valuable information on whether the economy is going back to normal as lock-down measures are lifted. In the beginning, some people, especially people in risk groups, may still be be reluctant to go, for example, to restaurants or stroll around shopping malls because they are afraid of contracting the virus.
 
 ```{r,echo = FALSE}
@@ -416,10 +425,6 @@ ts_dygraphs(ts_c(
 ### Info
 
 ###### Description
-
-The indicator for the *Perceived Housing Situation* includes search terms that reflect people’s search behavior regarding their current job situation and thus gives indications for the current unemployment situations.
-
-###### Keywords
 
 
 # Forecasting
