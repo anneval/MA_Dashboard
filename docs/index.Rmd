@@ -439,8 +439,8 @@ The WWWI is a weekly estimate of the real economic activity of the Austrian econ
 
 The OECD Weekly Tracker of GDP growth applies a two-step machine learning model (“neural network”) to a panel of GT data to aggregate information from search behavior related to consumption, labor markets, housing, trade, industrial activity, and economic uncertainty. The tracker provides nowcasts of year-on-year GDP growth rates with a 5-day delay. See [OECD Weekly Tracker of economic activity](https://www.oecd.org/economy/weekly-tracker-of-gdp-growth/)
 
-# <font size="3">Expanding window OLS</font> {data-navmenu="Nowcasting"}
-#### **Expanding Window OLS**
+# <font size="3">Expanding window estimation</font> {data-navmenu="Nowcasting"}
+#### **Expanding Window estimation**
 ### {style="border: 0px; background: none"}
 
 To analyze the predictive and nowcasting performance of the constructed daily sentiment index, I construct a pseudo-out-of-sample forecasting exercise to compare the in and out-of-sample GDP nowcasting ability of the daily economic sentiment index (DESI). Instead of simply splitting the data into a train and a validation set, I estimate all models using a recursive or expanding window strategy. Thus the initial sample size of the training data includes 19 observations or 30\% of the original data set and increases each round continuously. As this gives multiple estimations instead of only one, I account for possible changes in the structure of the data over time. The figures below present the graphical representation of each nowcasting model and its ability to precict GDP growth. 
@@ -578,25 +578,21 @@ knitr::kable(comparison_OOS, digits=3,col.names = c("RMSE (OOS)","RMSE (in-sampl
 # <font size="3">VAR(2)</font> {data-navmenu="Nowcasting"}
 #### **VAR(2)**
 ### {style="border: 0px; background: none"}
+To analyze the nowcasting performance of the DESI in a multivariate time series setting  I use a Vector Autoregressive Model with 2 lags.
 
- and to rely more on a data-driven approach while analyzing the nowcasting performance of the DESI in a multivariate time series setting, I extend the analysis by constructing a VAR model. 
- 
-\begin{equation}
-\label{eq8}
-    \mathbf{y_{t}} = \mathbf{c} + A_1 \mathbf{y_{t-1}} + ... + A_p \mathbf{y_{t-p}} + \boldsymbol{\epsilon_t}, \qquad \epsilon_t \sim \mathcal{N}_M(0,\,\Sigma)\ ,  \quad A_i(i = 1, \dotsc, p)
-\end{equation}
-
-Vector Autoregressive Model with 2 lags, where: $\mathbf{y_{t}}= [GDP_t, CCI_t, DESI_t]$
-
+Where: $\mathbf{y_{t}}= [GDP_t, CCI_t, DESI_t]$
 
 ## Row {data-height=600}
 
 ### Estimation Results
 
+<center>
 
 ```{r, results='asis',fig.align="center"}
 library(stargazer)
-stargazer(VAR1_est$varresult, type = "html", header = F, title = "VAR(2)",  
+
+
+stargazer(VAR1_est$varresult, type = "html",align = T ,header = F, title = "VAR(2)",  
           column.labels = c("GDP","CCI","DESI"), 
           dep.var.labels = c(""), 
           covariate.labels = c("$GDP_{t-1}$","$CCI_{t-1}$","$DESI_{t-1}$",
@@ -606,6 +602,13 @@ stargazer(VAR1_est$varresult, type = "html", header = F, title = "VAR(2)",
 
 ### Model diagnostics
 
+To assure the statistical quality and fit of the VAR(2) model, the residuals should have properties similar to a white noise process. Therefore, I run 
+tests on the independence (i.e., autocorrelation), homoscedasticity (constant residual variance), and normality of the residuals.
+
+#### Data
+
+
+
 ## Row {.tabset .tabset-fade}
 
 ### Forecast
@@ -613,11 +616,14 @@ stargazer(VAR1_est$varresult, type = "html", header = F, title = "VAR(2)",
 plot(forecast_VAR1)
 ```
 
+
+
+
+
 ### Accuracy
 
 ```{r,fig.align="center"}
-#To assure the statistical quality and fit of the VAR(2) model, the residuals should have properties similar to a white noise process. Therefore, I run 
-#tests on the independence (i.e., autocorrelation), homoscedasticity (constant residual variance), and normality of the residuals. First, to test for autocorrelation in the model's residuals, I use the Portmanteau- and Breusch-Godfrey tests for serial correlation. Both tests reject the Null-hypothesis of no-autocorrelation, which implies that the residuals are independent. Next, I test for homoscedasticity using the ARCH-LM test. Since the Null-hypothesis that the squared residuals are a sequence of white noise cannot be rejected, I conclude that the residuals are homoscedastic. Last, I test if the residuals follow a normal distribution using the Jarque-Bera test. Due to a very small p-value, the Null-hypothesis, that the data is normally distributed is rejected. The cause for this is most likely the large outliers caused by the Covid19 crisis. Technically, the normality of residuals is desirable but not necessary, especially as the focus here is on prediction and not on inference. Violations of the normality condition can lead to problems when calculating confidence intervals and significance tests due to unreliable standard errors \parencite{wooldridge2012introductory}.\footnote{See Appendix section \ref{ModelResid} Table \ref{Modeldiagnostics} for detailed test results and figures.}
+#First, to test for autocorrelation in the model's residuals, I use the Portmanteau- and Breusch-Godfrey tests for serial correlation. Both tests reject the Null-hypothesis of no-autocorrelation, which implies that the residuals are independent. Next, I test for homoscedasticity using the ARCH-LM test. Since the Null-hypothesis that the squared residuals are a sequence of white noise cannot be rejected, I conclude that the residuals are homoscedastic. Last, I test if the residuals follow a normal distribution using the Jarque-Bera test. Due to a very small p-value, the Null-hypothesis, that the data is normally distributed is rejected. The cause for this is most likely the large outliers caused by the Covid19 crisis. Technically, the normality of residuals is desirable but not necessary, especially as the focus here is on prediction and not on inference. Violations of the normality condition can lead to problems when calculating confidence intervals and significance tests due to unreliable standard errors \parencite{wooldridge2012introductory}.\footnote{See Appendix section \ref{ModelResid} Table \ref{Modeldiagnostics} for detailed test results and figures.}
 
 #plot(forecast_VAR1)
 ```
