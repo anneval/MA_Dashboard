@@ -91,14 +91,16 @@ ts_dygraphs(ts_c(
 
 ###### Description
 
-The indicator for the *Perceived Economic Situation* includes search terms that reflect people’s worries about the economy. For instance, people might google “economic crisis” (Wirtschaftskrise) to get information.
+The sentiment indicator for the *Perceived Economic Situation* consists of Goolge search terms that aim to reflect people’s concerns about the current economic situation. For instance, people might search for “economic crisis” (Wirtschaftskrise) to get information.  
 
 ###### Keywords
 
-- Wirtschaftskrise
-- Kurzarbeit
-- arbeitslos
-- Insolvenz
+- economic crisis ("Wirtschaftskrise")
+- short-term work ("Kurzarbeit)
+- unemployed ("arbeitslos")
+- insolvency ("Insolvenz")
+
+[Download data](https://raw.githubusercontent.com/anneval/MA_data/main/raw/at/trendecon_sa.csv){target="_blank"}
 
 ## Row {.tabset .tabset-fade}
 
