@@ -290,8 +290,7 @@ The indicator for the *Perceived Corona Situation* includes search terms that re
 #### **Weekly Indicators**
 ### {style="border: 0px; background: none"}
 
-The following figure shows the
-For some indicators, such as *Cultural Events* -- which includes demand for restaurants, cinemas, concerts etc. -- or *Gardening and Home Improvement* (aka do-it-yourself articles), there is no preexisting, well-established indicator to compare our search-based indicators with. Nevertheless these indicators appear meaningful, as we are observing substantial changes in searches for these goods and services compared to normal times. These indicators will therefore provide valuable information on whether the economy is going back to normal as lock-down measures are lifted. In the beginning, some people, especially people in risk groups, may still be be reluctant to go, for example, to restaurants or stroll around shopping malls because they are afraid of contracting the virus.
+The following figure compares the daily economic sentiment index to three other recently developed higher frequency GDP indicators - the weekly OeNB GDP indicator, the Weekly WIFO Economic Index (WWWI), and the OECD weekly tracker of GDP growth. To directly compare all four indicators, I temporally aggregate the DESI to the lower weekly frequency. The figure below plots the weekly indicators starting in January 2020. All four indicators capture the economic downturn at the end of the first quarter of 2020 due to the Covid19 outbreak. Compared to the other three indicators, the constructed Google based DESI can identify the decline of economic activity early on. Moreover, the DESI depicts a more profound downfall of the economy. Over the rest of 2020, the four indicators seem to co-move. Between the end of 2020 and the beginning of 2021, the WWWI and the OECD weekly tracker start to diverge from the DESI and the OEnB weekly tracker. In the middle of 2021, the indices slightly converge again, with the WWWI and the OECD weekly tracker remaining on higher levels. None of the indicators is able to properly capture the GDP rebound starting in the third quarter of 2020. Overall, the four indices follow a similar pattern and mostly show divergence in times of increased economic distress. This seems reasonable due to the depth of the different modeling approaches (e.g., linear or nonlinear) and the different data sources or data combinations used. 
 
 ```{r,echo = FALSE}
 ### Change from daily to weekly frequency
@@ -384,7 +383,7 @@ wecon_oenb_test <- wecon_oenb_test %>% ts_xts()
 
 ## Row {.tabset .tabset-fade}
 
-### Comparison of different weekly indicators
+### Comparison weekly indicators
 ```{r ce_background, echo = FALSE}
 
 ### {}
@@ -426,6 +425,11 @@ ts_dygraphs(ts_c(
 
 ###### Description
 
+The weekly OeNB GDP indicator has been published since May 2020 and aims to measure the economic activity through the expenditure side of GDP. The OeNB uses a set of business cycle indicators that are collected on a daily or weekly basis and calculates a new activity indicator via a bridge equation model that depicts the development of real GDP compared to the corresponding week of the previous year on a weekly basis. The higher frequency indicators include truck mileage data, payment transaction data, labor market data, electricity consumption data, mobility indicators, and financial market data. See [weekly OeNB GDP indicator](https://www.oenb.at/Publikationen/corona/bip-indikator-der-oenb.html)
+
+The WWWI is a weekly estimate of the real economic activity of the Austrian economy based on a time-series approach. It consists of 22 time series, including weekly, monthly, and quarterly indicators, covering eight GDP sub-components of the demand side of the quarterly National Accounts and nine of the production side. Weekly indicators include cashless transactions, freight transportation activity, passenger flight volumes, Google mobility data, unemployment, electricity consumption and pollutant emissions from industry, and international weekly indicators of economic activity. The WWWI uses temporal disaggregation models for historical decomposition and an ARMA-X nowcasting model for each weekly sub-indicator. In the end, the WWWI is obtained by summing up the growth contributions of the sub-indicators on the production side. See [Weekly Wifo Economic Index](https://www.wifo.ac.at/jart/prj3/wifo/main.jart?rel=en&content-id=1564766301706&reserve-mode=active)
+
+The OECD Weekly Tracker of GDP growth applies a two-step machine learning model (“neural network”) to a panel of GT data to aggregate information from search behavior related to consumption, labor markets, housing, trade, industrial activity, and economic uncertainty. The tracker provides nowcasts of year-on-year GDP growth rates with a 5-day delay. See [OECD Weekly Tracker of economic activity](https://www.oecd.org/economy/weekly-tracker-of-gdp-growth/)
 
 # Forecasting
 
