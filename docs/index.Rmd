@@ -446,7 +446,9 @@ To analyze the predictive and nowcasting performance of the constructed daily se
 
 ```{r}
 githubURL <- "https://github.com/anneval/MA_data/blob/main/All.RData?raw=true"
-load(url(githubURL))
+#load(url(githubURL))
+
+load(file(githubURL))
 ```
 
 ## Row {.tabset .tabset-fade}
