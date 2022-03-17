@@ -685,8 +685,8 @@ To analyze the predictive and nowcasting performance of the constructed daily se
 #load(url(githubURL))
 
 source <- "https://github.com/anneval/MA_data/blob/main/All.RData?raw=true"
-source <- "/Users/annevalder/Desktop/Uni/WU WIEN/SoSe_21/MA/GIT/All.RData"
-load(source)
+#source <- "/Users/annevalder/Desktop/Uni/WU WIEN/SoSe_21/MA/GIT/All.RData"
+load(url(source))
 
 ```
 
