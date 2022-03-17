@@ -681,8 +681,13 @@ knitr::kable(comparison_errors, digits=3,col.names = c("RMSE (OOS)","RMSE (in-sa
 To analyze the predictive and nowcasting performance of the constructed daily sentiment index, I construct a pseudo-out-of-sample forecasting exercise to compare the in and out-of-sample GDP nowcasting ability of the daily economic sentiment index (DESI). Instead of simply splitting the data into a train and a validation set, I estimate all models using a recursive or expanding window strategy. Thus the initial sample size of the training data includes 19 observations or 30\% of the original data set and increases each round continuously. As this gives multiple estimations instead of only one, I account for possible changes in the structure of the data over time. The figures below present the graphical representation of each nowcasting model and its ability to precict GDP growth. 
 
 ```{r}
-githubURL <- "https://github.com/anneval/MA_data/blob/main/All.RData?raw=true"
-load(url(githubURL))
+#githubURL <- "https://github.com/anneval/MA_data/blob/main/All.RData?raw=true"
+#load(url(githubURL))
+
+source <- "https://github.com/anneval/MA_data/blob/main/All.RData?raw=true"
+source <- "/Users/annevalder/Desktop/Uni/WU WIEN/SoSe_21/MA/GIT/All.RData"
+load(source)
+
 ```
 
 ## Row {.tabset .tabset-fade}
