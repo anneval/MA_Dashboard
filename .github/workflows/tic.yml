@@ -39,6 +39,7 @@ jobs:
       SDKROOT: /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk
       # use GITHUB_TOKEN from GitHub to workaround rate limits in {remotes}
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
+      url: https://github.com/anneval/MA_data/blob/main/All.RData?raw=true
 
     steps:
       - uses: actions/checkout@v3
