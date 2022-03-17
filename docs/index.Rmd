@@ -564,6 +564,8 @@ comparison_OOS <- data.frame(     "RMSE_OOS" = comparison_RMSE_OOS,
 
 rownames(comparison_OOS) <- c("AR(1)","CCI","DESI","AR(1) & CCI","AR(1) & DESI","AR(1) & CCI & DESI","CCI & DESI")
 
+
+
 ```
 
 
@@ -599,31 +601,75 @@ stargazer(VAR1_est$varresult, type = "html",align = T ,header = F, title = "VAR(
                                "$GDP_{t-2$","$CCI_{t-2}$","$DESI_{t-2}$",
                                "constant"))
 ```
-
-### Model diagnostics
-
-To assure the statistical quality and fit of the VAR(2) model, the residuals should have properties similar to a white noise process. Therefore, I run 
-tests on the independence (i.e., autocorrelation), homoscedasticity (constant residual variance), and normality of the residuals.
-
-#### Data
-
-
-
-## Row {.tabset .tabset-fade}
-
 ### Forecast
 ```{r,fig.dim = c(6, 6)}
 plot(forecast_VAR1)
 ```
 
+## Row {.tabset .tabset-fade}
 
+### Model diagnostics
 
+To assure the statistical quality and fit of the VAR(2) model, the residuals should have properties similar to a white noise process. Therefore, I run 
+tests on the independence (i.e., autocorrelation), homoscedasticity (constant residual variance), and normality of the residuals (p.value threshold = 0.05):
 
+```{r, results='asis', include=F}
+MDiagnostics_table <- cbind(ser.test_VAR1_PT$serial$p.value,ser.test_VAR_BG$serial$p.value,archtestVAR1$arch.mul$p.value,Normtest_VAR1$jb.mul$JB$p.value)
+
+MDiagnostics_table <- round(MDiagnostics_table,digits = 4)
+
+H0<- c("rejected","rejected","not rejected", "rejected"
+                        )  
+
+MDiagnostics_table <- rbind(MDiagnostics_table,H0)
+
+MDiagnostics_table.names <- rbind("p-values", "Nullhypothesis"
+                        )  
+
+rownames(MDiagnostics_table)<- MDiagnostics_table.names
+colnames(MDiagnostics_table) <- cbind("Portmanteau", "Breusch-Godfrey LM","JB-Test", "ARCH-LM")
+```
+
+```{r, results='asis', include=F}
+print(xtable::xtable(MDiagnostics_table,caption="Model diagnostics results",label="Modeldiagnostics"),
+      sanitize.text.function=function(UR.table){UR.table},comment=FALSE,digits=2)
+
+```
+
+```{r}
+
+knitr::kable(MDiagnostics_table, digits=3,caption = "",align = "c")
+
+```
+#### Data
+
+GDP growth from: [OECD](https://data.oecd.org/gdp/quarterly-gdp.htm#indicator-chart) <br>
+
+CCI from: [European Comission](https://ec.europa.eu/info/business-economy-euro/indicators-statistics/economic-databases/business-and-consumer-surveys/download-business-and-consumer-survey-data/time-series_en#consumers) <br>
+
+DESI constructed with the `trendecon` R package and the [trendEcon](https://www.trendecon.org) method using data from: [Google Trends](https://trends.google.de/trends/?geo=AT) <br>
 
 ### Accuracy
 
-```{r,fig.align="center"}
-#First, to test for autocorrelation in the model's residuals, I use the Portmanteau- and Breusch-Godfrey tests for serial correlation. Both tests reject the Null-hypothesis of no-autocorrelation, which implies that the residuals are independent. Next, I test for homoscedasticity using the ARCH-LM test. Since the Null-hypothesis that the squared residuals are a sequence of white noise cannot be rejected, I conclude that the residuals are homoscedastic. Last, I test if the residuals follow a normal distribution using the Jarque-Bera test. Due to a very small p-value, the Null-hypothesis, that the data is normally distributed is rejected. The cause for this is most likely the large outliers caused by the Covid19 crisis. Technically, the normality of residuals is desirable but not necessary, especially as the focus here is on prediction and not on inference. Violations of the normality condition can lead to problems when calculating confidence intervals and significance tests due to unreliable standard errors \parencite{wooldridge2012introductory}.\footnote{See Appendix section \ref{ModelResid} Table \ref{Modeldiagnostics} for detailed test results and figures.}
+```{r}
+acc_is_VAR1 <- acc_is_VAR1[2:5]
+acc_oos_VAR1 <- acc_oos_VAR1[-1]
+acc_Var <- rbind(acc_oos_VAR1,acc_is_VAR1)
 
-#plot(forecast_VAR1)
+rownames(acc_Var) <- c("in-sample","out-of-sample")
+```
+
+```{r, results='asis', include=F}
+print(xtable::xtable(acc_Var, label = "tab:accVAR", caption = ""), type="html")
+```
+
+```{r}
+
+knitr::kable(acc_Var, digits=3,col.names = c("RMSE","MAE","MPE","MAPE") ,caption = "VAR(2) - accuracy measures for the GDP model (3 periods ahead).",align = "c")
+
+```
+
+```{r}
+knitr::kable(comparison_errors, digits=3,col.names = c("RMSE (OOS)","RMSE (in-sample)","MAE(OOS)") ,caption = "Expanding window VAR(2) - accuracy for the GDP model of the pseudo-out-of-sample forecasting.",align = "c")
+
 ```
