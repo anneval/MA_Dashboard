@@ -299,8 +299,7 @@ google_w <- ts_frequency(google, to = "week") %>% ts_xts()
 
 #### OECD weekly tracker
 temp <- tempfile()
-download.file("https://github.com/NicolasWoloszko/OECD-Weekly-Tracker/raw/main/Data/weekly_tracker.xlsx",
-              destfile = temp)
+download.file("https://github.com/NicolasWoloszko/OECD-Weekly-Tracker/raw/main/Data/weekly_tracker.xlsx",destfile = temp)
 
 oecd <- read_xlsx(temp, sheet = "Sheet1") %>%
   #oecd <- read_xlsx("./real_data/weekly_tracker.xlsx", sheet = "Sheet1") %>%
@@ -445,8 +444,8 @@ The OECD Weekly Tracker of GDP growth applies a two-step machine learning model 
 To analyze the predictive and nowcasting performance of the constructed daily sentiment index, I construct a pseudo-out-of-sample forecasting exercise to compare the in and out-of-sample GDP nowcasting ability of the daily economic sentiment index (DESI). Instead of simply splitting the data into a train and a validation set, I estimate all models using a recursive or expanding window strategy. Thus the initial sample size of the training data includes 19 observations or 30\% of the original data set and increases each round continuously. As this gives multiple estimations instead of only one, I account for possible changes in the structure of the data over time. The figures below present the graphical representation of each nowcasting model and its ability to precict GDP growth. 
 
 ```{r}
-Data <-"/Users/annevalder/Desktop/Uni/WU WIEN/SoSe_21/MA/GIT/All.RData"
-load(Data)
+githubURL <- "https://github.com/anneval/MA_data/blob/main/All.RData?raw=true"
+load(url(githubURL))
 ```
 
 ## Row {.tabset .tabset-fade}
@@ -462,8 +461,7 @@ ts.plot(ts(Data[20:63,1],frequency = 4, start = c(2010,4),end = c(2021,3)),
     ylab = "GDP growth (%)", 
     lwd = 1)
 legend("bottomleft", c("GDP growth", "AR(1)"), col=c("black","red"), lty=c(1),
-        xpd=TRUE, bty="b", cex=0.75
-      )
+        xpd=TRUE, bty="b", cex=0.75)
 ```
 
 -------------------------------------
