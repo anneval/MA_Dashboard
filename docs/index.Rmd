@@ -603,7 +603,7 @@ stargazer(VAR1_est$varresult, type = "html",align = T ,header = F, title = "VAR(
 ```
 ### Forecast
 ```{r,fig.dim = c(6, 6)}
-#plot(forecast_VAR1)
+plot(forecast_VAR1)
 ```
 
 ## Row {.tabset .tabset-fade}
