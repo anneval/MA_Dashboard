@@ -350,7 +350,7 @@ wwwi <- read_xlsx(temp, sheet = "WWWI",
                   skip = 2, col_names = c("DATE", "VALUE","BIP_real"),
                   #skip = 2, col_names = c("DATE", "VALUE", "cng_yavg", "cng_q"),
                   #col_types = c("date", "guess", "guess", "guess"), 
-                  n_max = t) %>%
+                  n_max = t-1) %>%
   mutate(DATE = as.character(DATE)) %>%
   dplyr::select(DATE, VALUE) %>%
   rename(time = DATE, value = VALUE) %>%
